@@ -1,0 +1,644 @@
+Metadata-Version: 2.1
+Name: samila
+Version: 0.9
+Summary: Generative ART
+Home-page: https://www.samila.site
+Download-URL: https://github.com/sepandhaghighi/samila/tarball/v0.9
+Author: Samila Development Team
+Author-email: info@samila.site
+License: MIT
+Project-URL: Source, https://github.com/sepandhaghighi/samila
+Project-URL: Tracker, https://github.com/sepandhaghighi/samila/issues
+Project-URL: Discord, https://discord.com/invite/94bz5QGZWb
+Keywords: generative-art art nft file nft-storage
+Classifier: Development Status :: 4 - Beta
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Games/Entertainment
+Classifier: Topic :: Multimedia
+Classifier: Topic :: Multimedia :: Graphics
+Classifier: Topic :: Multimedia :: Graphics :: 3D Modeling
+Classifier: Topic :: Multimedia :: Graphics :: 3D Rendering
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Requires-Dist: matplotlib (>=3.0.0)
+Requires-Dist: requests (>=2.20.0)
+Requires-Dist: art (>=1.8)
+
+
+<div align="center">
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/logo.png" width=400 height=400>
+<br/>
+<h1>Samila</h1>
+<br/>
+<a href="https://www.python.org/"><img src="https://img.shields.io/badge/built%20with-Python3-green.svg" alt="built with Python3" /></a>
+<a href="https://codecov.io/gh/sepandhaghighi/samila">
+  <img src="https://codecov.io/gh/sepandhaghighi/samila/branch/master/graph/badge.svg" />
+</a>
+<a href="https://badge.fury.io/py/samila"><img src="https://badge.fury.io/py/samila.svg" alt="PyPI version" height="18"></a>
+<a href="https://anaconda.org/sepandhaghighi/samila"><img src="https://anaconda.org/sepandhaghighi/samila/badges/version.svg"></a>
+<a href="https://colab.research.google.com/github/sepandhaghighi/samila/blob/master">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Samila-Colab"/>
+</a>
+<a href="https://discord.com/invite/94bz5QGZWb">
+  <img src="https://img.shields.io/discord/900055829225562162.svg" alt="Discord Channel">
+</a>
+</div>
+
+----------
+## Table of contents					
+   * [Overview](https://github.com/sepandhaghighi/samila#overview)
+   * [Installation](https://github.com/sepandhaghighi/samila#installation)
+   * [Usage](https://github.com/sepandhaghighi/samila#usage)
+   * [Mathematical Details](https://github.com/sepandhaghighi/samila#mathematical-details)
+   * [Try Samila in Your Browser](https://github.com/sepandhaghighi/samila#try-samila-in-your-browser)
+   * [Issues & Bug Reports](https://github.com/sepandhaghighi/samila#issues--bug-reports)
+   * [Dependencies](https://github.com/sepandhaghighi/samila#dependencies)
+   * [Social Media](https://github.com/sepandhaghighi/samila#social-media)
+   * [Contribution](https://github.com/sepandhaghighi/samila/blob/master/.github/CONTRIBUTING.md)
+   * [References](https://github.com/sepandhaghighi/samila#references)
+   * [Acknowledgments](https://github.com/sepandhaghighi/samila#acknowledgments)
+   * [Authors](https://github.com/sepandhaghighi/samila/blob/master/AUTHORS.md)
+   * [License](https://github.com/sepandhaghighi/samila/blob/master/LICENSE)
+   * [Show Your Support](https://github.com/sepandhaghighi/samila#show-your-support)
+   * [Changelog](https://github.com/sepandhaghighi/samila/blob/master/CHANGELOG.md)
+   * [Code of Conduct](https://github.com/sepandhaghighi/samila/blob/master/.github/CODE_OF_CONDUCT.md)
+
+## Overview
+
+<p align="justify">	
+Samila is a generative art generator written in Python, Samila let's you create arts based on many thousand points. The position of every single point is calculated by a formula, which has random parameters. Because of the random numbers, every image looks different.
+</p>
+
+
+<table>
+	<tr> 
+		<td align="center">Open Hub</td>
+		<td align="center"><a href="https://www.openhub.net/p/samila"><img src="https://www.openhub.net/p/samila/widgets/project_thin_badge.gif"></a></td>	
+	</tr>
+	<tr>
+		<td align="center">PyPI Counter</td>
+		<td align="center"><a href="http://pepy.tech/project/samila"><img src="http://pepy.tech/badge/samila"></a></td>
+	</tr>
+	<tr>
+		<td align="center">Github Stars</td>
+		<td align="center"><a href="https://github.com/sepandhaghighi/samila"><img src="https://img.shields.io/github/stars/sepandhaghighi/samila.svg?style=social&label=Stars"></a></td>
+	</tr>
+</table>
+
+
+
+<table>
+	<tr> 
+		<td align="center">Branch</td>
+		<td align="center">master</td>	
+		<td align="center">dev</td>	
+	</tr>
+    <tr>
+		<td align="center">CI</td>
+		<td align="center"><img src="https://github.com/sepandhaghighi/samila/workflows/CI/badge.svg?branch=master"></td>
+		<td align="center"><img src="https://github.com/sepandhaghighi/samila/workflows/CI/badge.svg?branch=dev"></td>
+	</tr>
+</table>
+
+
+<table>
+	<tr> 
+		<td align="center">Code Quality</td>
+		<td><a href="https://www.codacy.com/gh/sepandhaghighi/samila/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sepandhaghighi/samila&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/14df8ed5f8434aaea85889555b0182a9"/></a></td>
+		<td><a href="https://codebeat.co/projects/github-com-sepandhaghighi-samila-dev"><img alt="codebeat badge" src="https://codebeat.co/badges/01e6aa48-4cc2-4d9c-8288-c9fb490ad371" /></a></td>
+		<td><a href="https://www.codefactor.io/repository/github/sepandhaghighi/samila"><img src="https://www.codefactor.io/repository/github/sepandhaghighi/samila/badge" alt="CodeFactor" /></a></td>
+	</tr>
+</table>
+
+
+
+## Installation		
+
+
+### Source code
+- Download [Version 0.9](https://github.com/sepandhaghighi/samila/archive/v0.9.zip) or [Latest Source ](https://github.com/sepandhaghighi/samila/archive/dev.zip)
+- Run `pip install -r requirements.txt` or `pip3 install -r requirements.txt` (Need root access)
+- Run `python3 setup.py install` or `python setup.py install` (Need root access)				
+
+### PyPI
+
+
+- Check [Python Packaging User Guide](https://packaging.python.org/installing/)     
+- Run `pip install samila==0.9` or `pip3 install samila==0.9` (Need root access)
+
+### Easy install
+
+- Run `easy_install --upgrade samila` (Need root access)
+
+### Conda
+
+- Check [Conda Managing Package](https://conda.io)
+- `conda install -c sepandhaghighi samila` (Need root access)	
+
+
+## Usage
+
+### Magic
+```pycon
+>>> import matplotlib.pyplot as plt
+>>> from samila import GenerativeImage
+>>> g = GenerativeImage()
+>>> g.generate()
+>>> g.plot()
+>>> plt.show()
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/7.png">	
+
+### Basic
+```pycon
+>>> import random
+>>> import math
+>>> def f1(x, y):
+    result = random.uniform(-1,1) * x**2  - math.sin(y**2) + abs(y-x)
+    return result
+>>> def f2(x, y):
+    result = random.uniform(-1,1) * y**3 - math.cos(x**2) + 2*x
+    return result
+>>> g = GenerativeImage(f1, f2)
+>>> g.generate()
+>>> g.plot()
+>>> g.seed
+188781
+>>> plt.show()
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/1.png">	
+
+### Projection
+```pycon
+>>> from samila import Projection
+>>> g = GenerativeImage(f1, f2)
+>>> g.generate()
+>>> g.plot(projection=Projection.POLAR)
+>>> g.seed
+829730
+>>> plt.show()
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/2.png">	
+
+* Supported projections : `RECTILINEAR`, `POLAR`, `AITOFF`, `HAMMER`, `LAMBERT`, `MOLLWEIDE` and `RANDOM`
+* Default projection is `RECTILINEAR`
+
+### Range
+```pycon
+>>> g = GenerativeImage(f1, f2)
+>>> g.generate(start=-2*math.pi, step=0.01, stop=0)
+>>> g.plot()
+>>> g.seed
+234752
+>>> plt.show()
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/3.png">	
+
+### Color
+```pycon
+>>> g = GenerativeImage(f1, f2)
+>>> g.generate()
+>>> g.plot(color="yellow", bgcolor="black", projection=Projection.POLAR)
+>>> g.seed
+1018273
+>>> plt.show()
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/4.png">	
+
+* Supported colors are available in `VALID_COLORS` list
+* `color` and `bgcolor` parameters supported formats:
+
+    1. Color name (example: `color="yellow"`)
+    2. RGB/RGBA (example: `color=(0.1,0.1,0.1)`, `color=(0.1,0.1,0.1,0.1)`)
+    3. Hex (example: `color="#eeefff"`)
+    4. Random (example: `color="random"`)
+    5. Complement (example: `color="complement", bgcolor="blue"`)
+    6. Transparent (example: `bgcolor="transparent"`)
+    7. List (example: `color=["black", "#fffeef",...]`)
+
+⚠️ **Transparent** mode is only available for background
+
+⚠️ **List** mode is only available for color
+
+⚠️ In **List** mode, the length of this list must be equal to the lengths of data1 and data2
+
+#### Point Color
+You can make your custom color map and use it in Samila
+
+```pycon
+>>> colorarray = [
+...  [0.7, 0.2, 0.2, 1],
+...  [0.6, 0.3, 0.2, 1],
+...  "black",
+...  [0.4, 0.4, 0.3, 1],
+...  [0.3, 0.4, 0.4, 1],
+...  "#ff2561"]
+>>> g.generate()
+>>> g.seed
+454893
+>>> g.plot(cmap=colorarray, color=g.data2, projection=Projection.POLAR)
+>>> plt.show()
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/8.png">	
+
+
+### Regeneration
+```pycon
+>>> g = GenerativeImage(f1, f2)
+>>> g.generate(seed=1018273)
+>>> g.plot(projection=Projection.POLAR)
+>>> plt.show()
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/5.png">	
+
+### NFT.storage
+Upload generated image directly to [NFT.storage](https://NFT.storage)
+
+```pycon
+>>> g.nft_storage(api_key="YOUR_API_KEY")
+{'status': True, 'message': 'FILE_LINK'}
+```
+
+### Save image
+Save generated image
+
+```pycon
+>>> g.save_image(file_adr="test.png")
+{'status': True, 'message': 'FILE_PATH'}
+```
+Save generated image in higher resolutions
+
+```pycon
+>>> g.save_image(file_adr="test.png", depth=5)
+{'status': True, 'message': 'FILE_PATH'}
+```
+
+### Save data
+Save generated image data
+
+```pycon
+>>> g.save_data(file_adr="data.json")
+{'status': True, 'message': 'FILE_PATH'}
+```
+So you can load it into a `GenerativeImage` instance later by
+
+```pycon
+>>> g = GenerativeImage(data=open('data.json', 'r'))
+```
+
+Data structure:
+```JSON
+{
+  "plot": {
+    "projection": "polar",
+    "bgcolor": "black",
+    "color": "snow",
+    "spot_size": 0.01
+  },
+  "matplotlib_version": "3.0.3",
+  "data1": [
+    0.3886741692042526,
+    22.57390286376703,
+    -0.1646310981668766,
+    66.23632344600155
+  ],
+  "data2": [
+    -0.14588750183600108,
+    20.197945942677833,
+    0.5485453260942901,
+    -589.3284610518896
+  ]
+}
+```
+
+### Save config
+Save generated image config. It contains string formats of functions which is also human readable.
+
+```pycon
+>>> g.save_config(file_adr="config.json")
+{'status': True, 'message': 'FILE_PATH'}
+```
+So you can load it into a `GenerativeImage` instance later by
+
+```pycon
+>>> g = GenerativeImage(config=open('config.json', 'r'))
+```
+
+Config structure:
+
+```JSON
+{
+    "matplotlib_version": "3.0.3",
+    "generate": {
+        "seed": 379184,
+        "stop": 3.141592653589793,
+        "step": 0.01,
+        "start": -3.141592653589793
+    },
+    "f2": "random.uniform(-1,1)*math.cos(x*(y**3))+random.uniform(-1,1)*math.ceil(y-x)",
+    "f1": "random.uniform(-1,1)*math.ceil(y)-random.uniform(-1,1)*y**2+random.uniform(-1,1)*abs(y-x)",
+    "plot": {
+        "color": "snow",
+        "bgcolor": "black",
+        "projection": "polar",
+        "spot_size": 0.01
+    }
+}
+```
+
+## Mathematical details
+Samila is simply a transformation between a square-shaped space from the Cartesian coordinate system to any arbitrary coordination like [Polar coordinate system](https://en.wikipedia.org/wiki/Polar_coordinate_system).
+
+### Example
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/mathematical_details/transformation.png">
+
+We have set of points in the first space (left square) which can be define as follow:
+
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/mathematical_details/S1.jpg">
+
+And bellow functions are used for transformation:
+
+```pycon
+>>> def f1(x, y):
+    result = random.uniform(-1,1) * x**2 - math.sin(y**2) + abs(y-x)
+    return result
+>>> def f2(x, y):
+    result = random.uniform(-1,1) * y**3 - math.cos(x**2) + 2*x
+    return result
+```
+
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/mathematical_details/S2.jpg">
+
+here we uses `Projection.POLAR` so later space will be the polar space and we have:
+
+```pycon
+>>> g = GenerativeImage(f1, f2)
+>>> g.generate(seed=10)
+>>> g.plot(projection=Projection.POLAR)
+```
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/mathematical_details/S2_.jpg">
+
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/images/6.png">
+
+## Try Samila in your browser!
+Samila can be used online in interactive Jupyter Notebooks via the Binder or Colab services! Try it out now! :
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/sepandhaghighi/samila/master)
+
+[![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sepandhaghighi/samila/blob/master)
+
+* Check `examples` folder 
+
+## Issues & bug reports			
+
+Just fill an issue and describe it. We'll check it ASAP! or send an email to [info@samila.site](mailto:info@samila.site "info@samila.site"). 
+
+- Please complete the issue template
+ 
+You can also join our discord server
+
+<a href="https://discord.com/invite/94bz5QGZWb">
+  <img src="https://img.shields.io/discord/900055829225562162.svg?style=for-the-badge" alt="Discord Channel">
+</a>
+
+
+## Dependencies
+
+<table>
+	<tr> 
+		<td align="center">master</td>	
+		<td align="center">dev</td>	
+	</tr>
+	<tr>
+		<td align="center"><a href="https://requires.io/github/sepandhaghighi/samila/requirements/?branch=master"><img src="https://requires.io/github/sepandhaghighi/samila/requirements.svg?branch=master" alt="Requirements Status" /></a></td>
+		<td align="center"><a href="https://requires.io/github/sepandhaghighi/samila/requirements/?branch=dev"><img src="https://requires.io/github/sepandhaghighi/samila/requirements.svg?branch=dev" alt="Requirements Status" /></a></td>
+	</tr>
+</table>
+
+## Social media
+
+1. [Instagram](https://www.instagram.com/samila_arts)
+2. [Telegram](https://t.me/samila_arts)
+3. [Twitter](https://twitter.com/samila_arts)
+4. [Discord](https://discord.com/invite/94bz5QGZWb)
+
+
+## References			
+
+<blockquote>1- Schönlieb, Carola-Bibiane, and Franz Schubert. "Random simulations for generative art construction–some examples." Journal of Mathematics and the Arts 7.1 (2013): 29-39.</blockquote>
+
+<blockquote>2- <a href="https://github.com/cutterkom/generativeart">Create Generative Art with R</a></blockquote>
+
+<blockquote>3- <a href="https://nft.storage/">NFT.storage : Free decentralized storage and bandwidth for NFTs</a></blockquote>
+
+## Acknowledgments
+
+This project was funded through the **Next Step Microgrant**, a program established by [Protocol Labs](https://protocol.ai/).
+
+## Show your support
+								
+<h3>Star this repo</h3>					
+
+Give a ⭐️ if this project helped you!
+
+<h3>Donate to our project</h3>	
+
+If you do like our project and we hope that you do, can you please support us? Our project is not and is never going to be working for profit. We need the money just so we can continue doing what we do ;-) .			
+
+<h4>Bitcoin</h4>
+1KtNLEEeUbTEK9PdN6Ya3ZAKXaqoKUuxCy
+<h4>Ethereum</h4>
+0xcD4Db18B6664A9662123D4307B074aE968535388
+<h4>Litecoin</h4>
+Ldnz5gMcEeV8BAdsyf8FstWDC6uyYR6pgZ
+<h4>Doge</h4>
+DDUnKpFQbBqLpFVZ9DfuVysBdr249HxVDh
+<h4>Tron</h4>
+TCZxzPZLcJHr2qR3uPUB1tXB6L3FDSSAx7
+<h4>Ripple</h4>
+rN7ZuRG7HDGHR5nof8nu5LrsbmSB61V1qq
+<h4>Binance Coin</h4>
+bnb1zglwcf0ac3d0s2f6ck5kgwvcru4tlctt4p5qef
+<h4>Tether</h4>
+0xcD4Db18B6664A9662123D4307B074aE968535388
+<h4>Dash</h4>
+Xd3Yn2qZJ7VE8nbKw2fS98aLxR5M6WUU3s
+<h4>Stellar</h4>
+GALPOLPISRHIYHLQER2TLJRGUSZH52RYDK6C3HIU4PSMNAV65Q36EGNL
+<h4>Zilliqa</h4>
+zil1knmz8zj88cf0exr2ry7nav9elehxfcgqu3c5e5
+<h4>Coffeete</h4>
+<a href="http://www.coffeete.ir/opensource">
+<img src="http://www.coffeete.ir/images/buttons/lemonchiffon.png" style="width:260px;" />
+</a>
+<h4>Gitcoin</h4>
+<a href="https://gitcoin.co/grants/3915/samila-generative-art-generator">
+<img src="https://github.com/sepandhaghighi/samila/raw/master/otherfiles/gitcoin_btn.png" style="width:260px;" />
+</a>
+
+
+
+# Changelog
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+## [0.9] - 2022-09-28
+### Added
+- Anaconda workflow
+### Changed
+- `README.md` updated
+- `CODE_OF_CONDUCT.md` updated
+- `demo.ipynb` updated
+- `cmap` parameter added to `plot` method
+- Random mode modified
+- Test system modified
+- `generate` method optimized
+- `samila_help` function updated
+- `load_data` and `load_config` functions error handling updated
+## [0.8] - 2022-06-01
+### Added
+- `INVALID_COLOR_TYPE_ERROR` error
+- `COLOR_NOT_FOUND_WARNING` warning
+- `BOTH_COLOR_COMPLEMENT_WARNING` warning
+- `set_background` function
+- `is_valid_color` function
+- `color_complement` function
+- `select_color` function
+### Changed
+- Transparent mode support for `bgcolor` parameter
+- Random mode modified
+- Complementary color support for `color` and `bgcolor` parameters
+- `filter_color` function modified
+## [0.7] - 2022-05-04
+### Added
+- `fill_data` function
+- `random_hex_color_gen` function
+- `color`,`bgcolor` and `projection` parameters random mode
+### Changed
+- Calculation warning added to `generate` method
+- Hex color support for `color` and `bgcolor` parameters
+- Test system modified
+- Random mode modified
+- `filter_color` function modified
+- `filter_projection` function modified
+- `is_same_data` function modified
+- `README.md` updated
+## [0.6] - 2022-04-13
+### Added
+- `save_params_filter` function
+### Changed
+- `__del__` method updated
+- `message` field changed in `save_fig_file` function
+- `message` field changed in `save_config_file` function
+- `message` field changed in `save_data_file` function
+- `message` field changed in `nft_storage_upload` function
+- `depth` section added to config/data file
+- `linewidth` parameter added to `plot` method
+- `linewidth` parameter added to `plot_params_filter` function
+- Random mode modified
+- `README.md` updated
+## [0.5] - 2022-03-21
+### Added
+- `__del__` method
+- Demo notebook
+### Changed
+- `depth` parameter added to `nft_storage` method
+- `depth` parameter added to `save_fig_buf` function
+- `alpha` parameter added to `plot` method
+- `alpha` parameter added to `plot_params_filter` function
+- Random mode modified
+- `README.md` updated
+## [0.4] - 2022-01-13
+### Added
+- `PLOT_DATA_ERROR` error message
+- `_GI_initializer` function
+- `generate_params_filter` function
+- `plot_params_filter` function
+- `filter_size` function
+- `save_config` method
+- `load_config` function
+- `save_config_file` function
+- `samilaConfigError` class
+- `samilaPlotError` class
+- `filter_float` function
+- Random equations mode
+- `function1_str` attribute
+- `function2_str` attribute
+### Changed
+- `README.md` updated
+- `plot` section added to data file
+- `edgecolor` changed to `c` in `plot` method
+- `config` parameter added to GenerativeImage `__init__`
+- `filter_projection` function edited
+- Test system updated
+### Removed
+- `NO_FUNCTION_ERROR` error message
+- `DATA_PARSING_ERROR` error message
+- `JUST_DATA_WARNING` warning message
+## [0.3] - 2021-11-10
+### Added
+- Discord channel
+- `load_data` function
+- `save_data_file` function
+- `save_data` method
+### Changed
+- `data` parameter added to GenerativeImage `__init__`
+- `depth` parameter added to `save_image` method
+- `depth` parameter added to `save_fig_file` function
+- `save_image` and `nft_storage` methods background bug fixed
+- `README.md` updated
+- Test system updated
+- `Python 3.10` added to `test.yml`
+## [0.2] - 2021-10-14
+### Added
+- `dependabot.yml`
+- `requirements-splitter.py`
+- `samila_help` function
+- `test.py`
+- `function_test.py`
+- `overall_test.py`
+- `nft_upload_test.py`
+- `is_same_data` function
+- `save_image` method
+### Changed
+- `dev-requirements.txt` updated
+- `README.md` updated
+- `__main__.py` updated
+- Test system updated
+- `nft_storage` method updated
+## [0.1] - 2021-09-30
+### Added
+- `GenerativeImage` class
+- `plot` method
+- `generate` method
+- `nft_storage` method
+
+[Unreleased]: https://github.com/sepandhaghighi/samila/compare/v0.9...dev
+[0.9]: https://github.com/sepandhaghighi/samila/compare/v0.8...v0.9
+[0.8]: https://github.com/sepandhaghighi/samila/compare/v0.7...v0.8
+[0.7]: https://github.com/sepandhaghighi/samila/compare/v0.6...v0.7
+[0.6]: https://github.com/sepandhaghighi/samila/compare/v0.5...v0.6
+[0.5]: https://github.com/sepandhaghighi/samila/compare/v0.4...v0.5
+[0.4]: https://github.com/sepandhaghighi/samila/compare/v0.3...v0.4
+[0.3]: https://github.com/sepandhaghighi/samila/compare/v0.2...v0.3
+[0.2]: https://github.com/sepandhaghighi/samila/compare/v0.1...v0.2
+[0.1]: https://github.com/sepandhaghighi/samila/compare/1058677...v0.1
+
+
+

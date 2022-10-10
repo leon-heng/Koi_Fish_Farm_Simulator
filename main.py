@@ -1,29 +1,23 @@
-from tkinter import ANCHOR, NW, Tk, Canvas, PhotoImage, mainloop
-import matplotlib.pyplot as plt
-from math import sin
+from turtle import width
 from perlin_noise import PerlinNoise
-from collections import namedtuple, OrderedDict
 from airfoil import *
+import pandas as pd
 import random
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
 
-width, height = 640, 640
-img_width, img_height = 540, 540
-
-Color = namedtuple('RGB','red, green, blue')
-colors = {} #dict of colors
-
-
-def hex_format(r, g, b):
-    #'''Returns color in hex format'''
-    return '#{:02X}{:02X}{:02X}'.format(r, g, b)
+red1 = np.array((227, 68, 39, 255))
+orange1 = np.array((241, 99, 35, 255))
+yellow1 = np.array((255, 208, 33, 255))
+black1 = np.array((65, 65, 65, 255))
+white = np.array((255, 255, 255, 255))
+transparent = np.array((255, 255, 255, 0))
 
 def main():
-    window = Tk()
-    canvas = Canvas(window, bg="white", height=height, width=width)
-    canvas.pack()
+    width = 1280
+    height = 1280
 
-    #Empty image
-    img = PhotoImage(width=img_width, height=img_height)
     # Pattern 1 - Perlin noise
     seed1 = random.randint(1,999999)
     octave1 = random.randint(1,6)
@@ -34,38 +28,58 @@ def main():
     octave2 = random.randint(1,6)
     noise2 = PerlinNoise(octaves=octave2, seed=seed2)
 
-    threshold = random.randint(10,35)
+    threshold = random.uniform(-0.3, 0.3)
     thickness = random.uniform(0.185,0.355)
 
-    for x in range(img_width+1):
-        limit = (naca4_symmetric(thickness, img_width, x))
-        upper_limit =  limit + img_height/2
-        lower_limit = -limit + img_height/2
+    x1 = np.linspace(0, width, width*4)
+    x2 = np.append(x1, np.flip(x1, 0))
 
-        if x == img_width :
-            upper_limit = img_height/2
-            lower_limit = upper_limit
+    y1 = naca4_symmetric(thickness, width, x1)
+    y2 = np.append(y1, np.flip(-y1, 0))
+    y2 = y2 + height/2
 
-        for y in range(img_height+1):
+    pig1 = np.empty([height, width, 4], dtype = int)
+    pig2 = np.empty([height, width, 4], dtype = int)
+    for x in range(width):
+        limit = (naca4_symmetric(thickness, width, x))
+        upper_limit =  limit + height/2
+        lower_limit = -limit + height/2
 
-            if y < upper_limit and y > lower_limit:
-                pigment1_intensity = int(200 * (noise1([x/img_width, y/img_height])))
-                pigment2_intensity = int(200 * (noise2([x/img_width, y/img_height])))
+        for y in range(height):
+            if y > lower_limit and y < upper_limit:
+                pigment1_intensity = (noise1([x/width, y/height]))
+                pigment2_intensity = (noise2([x/width, y/height]))
 
-                if pigment1_intensity >= pigment2_intensity and pigment1_intensity >= threshold:
-                    img.put("#%02x%02x%02x" % (200, 10, 10), (x, y))
-                elif pigment2_intensity >= pigment1_intensity and pigment2_intensity >= threshold:
-                    img.put("#%02x%02x%02x" % (55, 55, 55), (x, y))
+                if pigment1_intensity > pigment2_intensity > threshold:
+                    pig1[y, x] = black1
+                    pig2[y, x] = transparent
+
+                elif pigment2_intensity > pigment1_intensity > threshold:
+                    pig1[y, x] = transparent
+                    pig2[y, x] = red1
+
                 else:
-                    img.put("#%02x%02x%02x" % (255, 255, 255), (x, y))
+                    pig1[y, x] = white
+                    pig2[y, x] = transparent
 
-            if y == int(upper_limit) or y == int(lower_limit):
-                img.put("#%02x%02x%02x" % (0, 0, 0), (x, y))
+            else:
+                pig1[y, x] = transparent
+                pig2[y, x] = transparent
 
 
-    canvas.create_image((width-img_width)/2, (height-img_height)/2, image=img, anchor=NW)
-    mainloop()
+    pig1.T
+    pig2.T
 
+    koi = plt.figure()
+    shape = koi.add_subplot(111)
+    shape.plot(x2, y2, 'k-', linewidth=0.5)
+    shape.axis([0, width, 0, height])
+    shape.axis('off')
+    
+    shape.imshow(pig1)
+    shape.imshow(pig2)
+    koi.show() 
+    koi.savefig("koi.png", transparent=True)
 
 if __name__== "__main__":
     main()
