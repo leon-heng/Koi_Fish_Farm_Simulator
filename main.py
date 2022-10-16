@@ -1,4 +1,6 @@
-from tkinter import Y
+import tkinter as tk
+from PIL import ImageTk
+from PIL import Image
 from perlin_noise import PerlinNoise
 from airfoil import *
 import math
@@ -7,6 +9,8 @@ import random
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+import time
+import io
 
 red1 = np.array((227, 68, 39, 255))
 orange1 = np.array((241, 99, 35, 255))
@@ -24,8 +28,58 @@ EYE_THICKNESS = 20
 KOI_THICKNESS_MAX = 0.30
 KOI_THICKNESS_MIN = 0.18
 
+koi_array = io.BytesIO()
 
 def main():
+    global koi_array
+    make_koi()
+
+    time.sleep(1)
+    root = tk.Tk()
+    app = SimpleApp(root, 'koi.png')
+    #app = SimpleApp(root, koi_array)
+    root.mainloop()
+
+    
+    return
+
+class SimpleApp(object):
+    def __init__(self, master, filename, **kwargs):
+        self.master = master
+        self.filename = filename
+        self.canvas = tk.Canvas(master, width=1000, height=1000)
+        self.canvas.pack()
+
+        self.update = self.movement().__next__
+        master.after(100, self.update)
+
+    def movement(self):
+        image = Image.open(self.filename)
+        image = image.resize((256, 256))
+
+        angle = 0
+        x = 250
+        y = 100
+
+        while True:
+            
+            koi_image = ImageTk.PhotoImage(image.rotate(angle))
+            canvas_obj = self.canvas.create_image(x, y, image=koi_image)
+            self.canvas.move(canvas_obj, x, y)
+            self.master.after_idle(self.update)
+
+            yield
+            self.canvas.delete(canvas_obj)
+            angle += 0.5
+            angle %= 360
+            x -= 1.5*math.sin(math.radians(90 + angle))
+            y -= 1.5*math.cos(math.radians(90 + angle))
+            time.sleep(0.005)
+
+
+
+def make_koi():
+    global koi_array
     eye_x = int(random.uniform(0.075, 0.10) * WIDTH)
     thickness = random.uniform(KOI_THICKNESS_MIN, KOI_THICKNESS_MAX)
 
@@ -66,8 +120,11 @@ def main():
     shape.imshow(pig2)
     shape.imshow(pig3)
     shape.imshow(eyelayer)
-    plt.show() 
-    koi.savefig("koi.png", transparent=True)
+    koi.savefig("koi.png", transparent=True, format = 'png')
+    koi.clf()
+    plt.close()
+    #koi.savefig(koi_array, transparent=True, format = 'png')
+    
 
 def layering(shape : float, seed : int, octave : int, threshold : float,\
              color, first_layer : bool = False):
