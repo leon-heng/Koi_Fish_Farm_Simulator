@@ -90,23 +90,18 @@ else:
     def load_library(libname, loader_path):
         """
         It is possible to load a library using
-
         >>> lib = ctypes.cdll[<full_path_name>] # doctest: +SKIP
 
         But there are cross-platform considerations, such as library file extensions,
         plus the fact Windows will just load the first library it finds with that name.
         NumPy supplies the load_library function as a convenience.
 
-        .. versionchanged:: 1.20.0
-            Allow libname and loader_path to take any
-            :term:`python:path-like object`.
-
         Parameters
         ----------
-        libname : path-like
+        libname : str
             Name of the library, which can have 'lib' as a prefix,
             but without an extension.
-        loader_path : path-like
+        loader_path : str
             Where the library can be found.
 
         Returns
@@ -124,10 +119,6 @@ else:
             import warnings
             warnings.warn("All features of ctypes interface may not work "
                           "with ctypes < 1.0.1", stacklevel=2)
-
-        # Convert path-like objects into strings
-        libname = os.fsdecode(libname)
-        loader_path = os.fsdecode(loader_path)
 
         ext = os.path.splitext(libname)[1]
         if not ext:
@@ -170,7 +161,7 @@ def _num_fromflags(flaglist):
     return num
 
 _flagnames = ['C_CONTIGUOUS', 'F_CONTIGUOUS', 'ALIGNED', 'WRITEABLE',
-              'OWNDATA', 'WRITEBACKIFCOPY']
+              'OWNDATA', 'UPDATEIFCOPY', 'WRITEBACKIFCOPY']
 def _flags_fromnum(num):
     res = []
     for key in _flagnames:
@@ -261,6 +252,7 @@ def ndpointer(dtype=None, ndim=None, shape=None, flags=None):
           - WRITEABLE / W
           - ALIGNED / A
           - WRITEBACKIFCOPY / X
+          - UPDATEIFCOPY / U
 
     Returns
     -------

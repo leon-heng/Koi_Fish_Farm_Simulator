@@ -284,7 +284,7 @@ def _exec_command(command, use_shell=None, use_tee = None, **env):
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT,
                                 universal_newlines=False)
-    except OSError:
+    except EnvironmentError:
         # Return 127, as os.spawn*() and /bin/sh do
         return 127, ''
 

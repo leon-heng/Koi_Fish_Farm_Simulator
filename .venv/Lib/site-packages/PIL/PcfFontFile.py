@@ -84,7 +84,8 @@ class PcfFontFile(FontFile.FontFile):
         #
         # create glyph structure
 
-        for ch, ix in enumerate(encoding):
+        for ch in range(256):
+            ix = encoding[ch]
             if ix is not None:
                 x, y, l, r, w, a, d, f = metrics[ix]
                 glyph = (w, 0), (l, d - y, x + l, d), (0, 0, x, y), bitmaps[ix]
@@ -192,15 +193,15 @@ class PcfFontFile(FontFile.FontFile):
         for i in range(nbitmaps):
             offsets.append(i32(fp.read(4)))
 
-        bitmap_sizes = []
+        bitmapSizes = []
         for i in range(4):
-            bitmap_sizes.append(i32(fp.read(4)))
+            bitmapSizes.append(i32(fp.read(4)))
 
         # byteorder = format & 4  # non-zero => MSB
         bitorder = format & 8  # non-zero => MSB
         padindex = format & 3
 
-        bitmapsize = bitmap_sizes[padindex]
+        bitmapsize = bitmapSizes[padindex]
         offsets.append(bitmapsize)
 
         data = fp.read(bitmapsize)
@@ -218,27 +219,28 @@ class PcfFontFile(FontFile.FontFile):
         return bitmaps
 
     def _load_encoding(self):
+
+        # map character code to bitmap index
+        encoding = [None] * 256
+
         fp, format, i16, i32 = self._getformat(PCF_BDF_ENCODINGS)
 
-        first_col, last_col = i16(fp.read(2)), i16(fp.read(2))
-        first_row, last_row = i16(fp.read(2)), i16(fp.read(2))
+        firstCol, lastCol = i16(fp.read(2)), i16(fp.read(2))
+        firstRow, lastRow = i16(fp.read(2)), i16(fp.read(2))
 
         i16(fp.read(2))  # default
 
-        nencoding = (last_col - first_col + 1) * (last_row - first_row + 1)
+        nencoding = (lastCol - firstCol + 1) * (lastRow - firstRow + 1)
 
-        # map character code to bitmap index
-        encoding = [None] * min(256, nencoding)
+        encodingOffsets = [i16(fp.read(2)) for _ in range(nencoding)]
 
-        encoding_offsets = [i16(fp.read(2)) for _ in range(nencoding)]
-
-        for i in range(first_col, len(encoding)):
+        for i in range(firstCol, len(encoding)):
             try:
-                encoding_offset = encoding_offsets[
+                encodingOffset = encodingOffsets[
                     ord(bytearray([i]).decode(self.charset_encoding))
                 ]
-                if encoding_offset != 0xFFFF:
-                    encoding[i] = encoding_offset
+                if encodingOffset != 0xFFFF:
+                    encoding[i] = encodingOffset
             except UnicodeDecodeError:
                 # character is not supported in selected encoding
                 pass

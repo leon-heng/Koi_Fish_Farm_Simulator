@@ -86,7 +86,6 @@ def as_strided(x, shape=None, strides=None, subok=False, writeable=True):
     Vectorized write operations on such arrays will typically be
     unpredictable. They may even give different results for small, large,
     or transposed arrays.
-
     Since writing to these arrays has to be tested and done with great
     care, you may want to use ``writeable=False`` to avoid accidental write
     operations.
@@ -372,9 +371,8 @@ def broadcast_to(array, shape, subok=False):
     ----------
     array : array_like
         The array to broadcast.
-    shape : tuple or int
-        The shape of the desired array. A single integer ``i`` is interpreted
-        as ``(i,)``.
+    shape : tuple
+        The shape of the desired array.
     subok : bool, optional
         If True, then sub-classes will be passed-through, otherwise
         the returned array will be forced to be a base-class array (default).

@@ -198,9 +198,7 @@ def _save(im, fp, filename):
     if im.mode == "P":
         # colour palette
         fp.write(o8(12))
-        palette = im.im.getpalette("RGB", "RGB")
-        palette += b"\x00" * (768 - len(palette))
-        fp.write(palette)  # 768 bytes
+        fp.write(im.im.getpalette("RGB", "RGB"))  # 768 bytes
     elif im.mode == "L":
         # greyscale palette
         fp.write(o8(12))

@@ -1,4 +1,4 @@
-#ifndef NUMPY_CORE_INCLUDE_NUMPY__NEIGHBORHOOD_IMP_H_
+#ifndef _NPY_INCLUDE_NEIGHBORHOOD_IMP
 #error You should not include this header directly
 #endif
 /*

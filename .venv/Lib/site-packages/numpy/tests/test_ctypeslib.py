@@ -1,7 +1,6 @@
 import sys
 import pytest
 import weakref
-from pathlib import Path
 
 import numpy as np
 from numpy.ctypeslib import ndpointer, load_library, as_array
@@ -38,15 +37,13 @@ else:
                     reason="Known to fail on cygwin")
 class TestLoadLibrary:
     def test_basic(self):
-        loader_path = np.core._multiarray_umath.__file__
-
-        out1 = load_library('_multiarray_umath', loader_path)
-        out2 = load_library(Path('_multiarray_umath'), loader_path)
-        out3 = load_library('_multiarray_umath', Path(loader_path))
-        out4 = load_library(b'_multiarray_umath', loader_path)
-
-        assert isinstance(out1, ctypes.CDLL)
-        assert out1 is out2 is out3 is out4
+        try:
+            # Should succeed
+            load_library('_multiarray_umath', np.core._multiarray_umath.__file__)
+        except ImportError as e:
+            msg = ("ctypes is not available on this python: skipping the test"
+                   " (import error was: %s)" % str(e))
+            print(msg)
 
     def test_basic2(self):
         # Regression for #801: load_library with a full library name

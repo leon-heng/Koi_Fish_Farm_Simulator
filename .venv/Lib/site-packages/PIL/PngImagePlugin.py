@@ -37,7 +37,6 @@ import re
 import struct
 import warnings
 import zlib
-from enum import IntEnum
 
 from . import Image, ImageChops, ImageFile, ImagePalette, ImageSequence
 from ._binary import i16be as i16
@@ -45,11 +44,10 @@ from ._binary import i32be as i32
 from ._binary import o8
 from ._binary import o16be as o16
 from ._binary import o32be as o32
-from ._deprecate import deprecate
 
 logger = logging.getLogger(__name__)
 
-is_cid = re.compile(rb"\w\w\w\w").match
+is_cid = re.compile(br"\w\w\w\w").match
 
 
 _MAGIC = b"\211PNG\r\n\032\n"
@@ -96,49 +94,36 @@ See :ref:`Text in PNG File Format<png-text>`.
 
 
 # APNG frame disposal modes
-class Disposal(IntEnum):
-    OP_NONE = 0
-    """
-    No disposal is done on this frame before rendering the next frame.
-    See :ref:`Saving APNG sequences<apng-saving>`.
-    """
-    OP_BACKGROUND = 1
-    """
-    This frame’s modified region is cleared to fully transparent black before rendering
-    the next frame.
-    See :ref:`Saving APNG sequences<apng-saving>`.
-    """
-    OP_PREVIOUS = 2
-    """
-    This frame’s modified region is reverted to the previous frame’s contents before
-    rendering the next frame.
-    See :ref:`Saving APNG sequences<apng-saving>`.
-    """
-
+APNG_DISPOSE_OP_NONE = 0
+"""
+No disposal is done on this frame before rendering the next frame.
+See :ref:`Saving APNG sequences<apng-saving>`.
+"""
+APNG_DISPOSE_OP_BACKGROUND = 1
+"""
+This frame’s modified region is cleared to fully transparent black before rendering
+the next frame.
+See :ref:`Saving APNG sequences<apng-saving>`.
+"""
+APNG_DISPOSE_OP_PREVIOUS = 2
+"""
+This frame’s modified region is reverted to the previous frame’s contents before
+rendering the next frame.
+See :ref:`Saving APNG sequences<apng-saving>`.
+"""
 
 # APNG frame blend modes
-class Blend(IntEnum):
-    OP_SOURCE = 0
-    """
-    All color components of this frame, including alpha, overwrite the previous output
-    image contents.
-    See :ref:`Saving APNG sequences<apng-saving>`.
-    """
-    OP_OVER = 1
-    """
-    This frame should be alpha composited with the previous output image contents.
-    See :ref:`Saving APNG sequences<apng-saving>`.
-    """
-
-
-def __getattr__(name):
-    for enum, prefix in {Disposal: "APNG_DISPOSE_", Blend: "APNG_BLEND_"}.items():
-        if name.startswith(prefix):
-            name = name[len(prefix) :]
-            if name in enum.__members__:
-                deprecate(f"{prefix}{name}", 10, f"{enum.__name__}.{name}")
-                return enum[name]
-    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+APNG_BLEND_OP_SOURCE = 0
+"""
+All color components of this frame, including alpha, overwrite the previous output
+image contents.
+See :ref:`Saving APNG sequences<apng-saving>`.
+"""
+APNG_BLEND_OP_OVER = 1
+"""
+This frame should be alpha composited with the previous output image contents.
+See :ref:`Saving APNG sequences<apng-saving>`.
+"""
 
 
 def _safe_zlib_decompress(s):
@@ -424,10 +409,6 @@ class PngStream(ChunkStream):
 
         # image header
         s = ImageFile._safe_read(self.fp, length)
-        if length < 13:
-            if ImageFile.LOAD_TRUNCATED_IMAGES:
-                return s
-            raise ValueError("Truncated IHDR chunk")
         self.im_size = i32(s, 0), i32(s, 4)
         try:
             self.im_mode, self.im_rawmode = _MODES[(s[8], s[9])]
@@ -516,10 +497,6 @@ class PngStream(ChunkStream):
 
         # pixels per unit
         s = ImageFile._safe_read(self.fp, length)
-        if length < 9:
-            if ImageFile.LOAD_TRUNCATED_IMAGES:
-                return s
-            raise ValueError("Truncated pHYs chunk")
         px, py = i32(s, 0), i32(s, 4)
         unit = s[8]
         if unit == 1:  # meter
@@ -632,10 +609,6 @@ class PngStream(ChunkStream):
     # APNG chunks
     def chunk_acTL(self, pos, length):
         s = ImageFile._safe_read(self.fp, length)
-        if length < 8:
-            if ImageFile.LOAD_TRUNCATED_IMAGES:
-                return s
-            raise ValueError("APNG contains truncated acTL chunk")
         if self.im_n_frames is not None:
             self.im_n_frames = None
             warnings.warn("Invalid APNG, will use default PNG image if possible")
@@ -651,10 +624,6 @@ class PngStream(ChunkStream):
 
     def chunk_fcTL(self, pos, length):
         s = ImageFile._safe_read(self.fp, length)
-        if length < 26:
-            if ImageFile.LOAD_TRUNCATED_IMAGES:
-                return s
-            raise ValueError("APNG contains truncated fcTL chunk")
         seq = i32(s)
         if (self._seq_num is None and seq != 0) or (
             self._seq_num is not None and self._seq_num != seq - 1
@@ -676,11 +645,6 @@ class PngStream(ChunkStream):
         return s
 
     def chunk_fdAT(self, pos, length):
-        if length < 4:
-            if ImageFile.LOAD_TRUNCATED_IMAGES:
-                s = ImageFile._safe_read(self.fp, length)
-                return s
-            raise ValueError("APNG contains truncated fDAT chunk")
         s = ImageFile._safe_read(self.fp, 4)
         seq = i32(s)
         if self._seq_num != seq - 1:
@@ -710,7 +674,7 @@ class PngImageFile(ImageFile.ImageFile):
 
         if not _accept(self.fp.read(8)):
             raise SyntaxError("not a PNG file")
-        self._fp = self.fp
+        self.__fp = self.fp
         self.__frame = 0
 
         #
@@ -767,7 +731,7 @@ class PngImageFile(ImageFile.ImageFile):
             self._close_exclusive_fp_after_loading = False
             self.png.save_rewind()
             self.__rewind_idat = self.__prepare_idat
-            self.__rewind = self._fp.tell()
+            self.__rewind = self.__fp.tell()
             if self.default_image:
                 # IDAT chunk contains default image and not first animation frame
                 self.n_frames += 1
@@ -822,7 +786,7 @@ class PngImageFile(ImageFile.ImageFile):
     def _seek(self, frame, rewind=False):
         if frame == 0:
             if rewind:
-                self._fp.seek(self.__rewind)
+                self.__fp.seek(self.__rewind)
                 self.png.rewind()
                 self.__prepare_idat = self.__rewind_idat
                 self.im = None
@@ -830,7 +794,7 @@ class PngImageFile(ImageFile.ImageFile):
                     self.pyaccess = None
                 self.info = self.png.im_info
                 self.tile = self.png.im_tile
-                self.fp = self._fp
+                self.fp = self.__fp
             self._prev_im = None
             self.dispose = None
             self.default_image = self.info.get("default_image", False)
@@ -849,7 +813,7 @@ class PngImageFile(ImageFile.ImageFile):
                 self.im.paste(self.dispose, self.dispose_extent)
             self._prev_im = self.im.copy()
 
-            self.fp = self._fp
+            self.fp = self.__fp
 
             # advance to the next frame
             if self.__prepare_idat:
@@ -897,13 +861,13 @@ class PngImageFile(ImageFile.ImageFile):
                 raise EOFError
 
         # setup frame disposal (actual disposal done when needed in the next _seek())
-        if self._prev_im is None and self.dispose_op == Disposal.OP_PREVIOUS:
-            self.dispose_op = Disposal.OP_BACKGROUND
+        if self._prev_im is None and self.dispose_op == APNG_DISPOSE_OP_PREVIOUS:
+            self.dispose_op = APNG_DISPOSE_OP_BACKGROUND
 
-        if self.dispose_op == Disposal.OP_PREVIOUS:
+        if self.dispose_op == APNG_DISPOSE_OP_PREVIOUS:
             self.dispose = self._prev_im.copy()
             self.dispose = self._crop(self.dispose, self.dispose_extent)
-        elif self.dispose_op == Disposal.OP_BACKGROUND:
+        elif self.dispose_op == APNG_DISPOSE_OP_BACKGROUND:
             self.dispose = Image.core.fill(self.mode, self.size)
             self.dispose = self._crop(self.dispose, self.dispose_extent)
         else:
@@ -992,7 +956,7 @@ class PngImageFile(ImageFile.ImageFile):
             self.png.close()
             self.png = None
         else:
-            if self._prev_im and self.blend_op == Blend.OP_OVER:
+            if self._prev_im and self.blend_op == APNG_BLEND_OP_OVER:
                 updated = self._crop(self.im, self.dispose_extent)
                 self._prev_im.paste(
                     updated, self.dispose_extent, updated.convert("RGBA")
@@ -1018,7 +982,6 @@ class PngImageFile(ImageFile.ImageFile):
         """
         Returns a dictionary containing the XMP tags.
         Requires defusedxml to be installed.
-
         :returns: XMP tags in a dictionary.
         """
         return (
@@ -1026,6 +989,15 @@ class PngImageFile(ImageFile.ImageFile):
             if "XML:com.adobe.xmp" in self.info
             else {}
         )
+
+    def _close__fp(self):
+        try:
+            if self.__fp != self.fp:
+                self.__fp.close()
+        except AttributeError:
+            pass
+        finally:
+            self.__fp = None
 
 
 # --------------------------------------------------------------------
@@ -1089,8 +1061,10 @@ def _write_multiple_frames(im, fp, chunk, rawmode):
     default_image = im.encoderinfo.get("default_image", im.info.get("default_image"))
     duration = im.encoderinfo.get("duration", im.info.get("duration", 0))
     loop = im.encoderinfo.get("loop", im.info.get("loop", 0))
-    disposal = im.encoderinfo.get("disposal", im.info.get("disposal", Disposal.OP_NONE))
-    blend = im.encoderinfo.get("blend", im.info.get("blend", Blend.OP_SOURCE))
+    disposal = im.encoderinfo.get(
+        "disposal", im.info.get("disposal", APNG_DISPOSE_OP_NONE)
+    )
+    blend = im.encoderinfo.get("blend", im.info.get("blend", APNG_BLEND_OP_SOURCE))
 
     if default_image:
         chain = itertools.chain(im.encoderinfo.get("append_images", []))
@@ -1120,10 +1094,10 @@ def _write_multiple_frames(im, fp, chunk, rawmode):
                 previous = im_frames[-1]
                 prev_disposal = previous["encoderinfo"].get("disposal")
                 prev_blend = previous["encoderinfo"].get("blend")
-                if prev_disposal == Disposal.OP_PREVIOUS and len(im_frames) < 2:
-                    prev_disposal = Disposal.OP_BACKGROUND
+                if prev_disposal == APNG_DISPOSE_OP_PREVIOUS and len(im_frames) < 2:
+                    prev_disposal = APNG_DISPOSE_OP_BACKGROUND
 
-                if prev_disposal == Disposal.OP_BACKGROUND:
+                if prev_disposal == APNG_DISPOSE_OP_BACKGROUND:
                     base_im = previous["im"]
                     dispose = Image.core.fill("RGBA", im.size, (0, 0, 0, 0))
                     bbox = previous["bbox"]
@@ -1132,7 +1106,7 @@ def _write_multiple_frames(im, fp, chunk, rawmode):
                     else:
                         bbox = (0, 0) + im.size
                     base_im.paste(dispose, bbox)
-                elif prev_disposal == Disposal.OP_PREVIOUS:
+                elif prev_disposal == APNG_DISPOSE_OP_PREVIOUS:
                     base_im = im_frames[-2]["im"]
                 else:
                     base_im = previous["im"]

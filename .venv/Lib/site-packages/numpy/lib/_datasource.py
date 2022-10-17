@@ -280,9 +280,8 @@ class DataSource:
     def _splitzipext(self, filename):
         """Split zip extension from filename and return filename.
 
-        Returns
-        -------
-        base, zip_ext : {tuple}
+        *Returns*:
+            base, zip_ext : {tuple}
 
         """
 
@@ -325,6 +324,7 @@ class DataSource:
         # a significant fraction of numpy's total import time.
         import shutil
         from urllib.request import urlopen
+        from urllib.error import URLError
 
         upath = self.abspath(path)
 
@@ -530,7 +530,7 @@ class DataSource:
             return _file_openers[ext](found, mode=mode,
                                       encoding=encoding, newline=newline)
         else:
-            raise FileNotFoundError(f"{path} not found.")
+            raise IOError("%s not found." % path)
 
 
 class Repository (DataSource):

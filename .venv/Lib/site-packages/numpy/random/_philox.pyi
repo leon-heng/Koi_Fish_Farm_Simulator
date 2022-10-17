@@ -1,8 +1,14 @@
-from typing import Any, TypedDict
+import sys
+from typing import Any, Union
 
 from numpy import dtype, ndarray, uint64
 from numpy.random.bit_generator import BitGenerator, SeedSequence
-from numpy._typing import _ArrayLikeInt_co
+from numpy.typing import _ArrayLikeInt_co
+
+if sys.version_info >= (3, 8):
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
 
 class _PhiloxInternal(TypedDict):
     counter: ndarray[Any, dtype[uint64]]
@@ -19,9 +25,9 @@ class _PhiloxState(TypedDict):
 class Philox(BitGenerator):
     def __init__(
         self,
-        seed: None | _ArrayLikeInt_co | SeedSequence = ...,
-        counter: None | _ArrayLikeInt_co = ...,
-        key: None | _ArrayLikeInt_co = ...,
+        seed: Union[None, _ArrayLikeInt_co, SeedSequence] = ...,
+        counter: Union[None, _ArrayLikeInt_co] = ...,
+        key: Union[None, _ArrayLikeInt_co] = ...,
     ) -> None: ...
     @property
     def state(

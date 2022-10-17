@@ -1,5 +1,5 @@
-#ifndef NUMPY_CORE_INCLUDE_NUMPY_RANDOM_BITGEN_H_
-#define NUMPY_CORE_INCLUDE_NUMPY_RANDOM_BITGEN_H_
+#ifndef _RANDOM_BITGEN_H
+#define _RANDOM_BITGEN_H
 
 #pragma once
 #include <stddef.h>
@@ -17,4 +17,4 @@ typedef struct bitgen {
 } bitgen_t;
 
 
-#endif  /* NUMPY_CORE_INCLUDE_NUMPY_RANDOM_BITGEN_H_ */
+#endif

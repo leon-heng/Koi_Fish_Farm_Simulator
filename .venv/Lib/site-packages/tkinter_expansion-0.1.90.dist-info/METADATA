@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: tkinter-expansion
+Version: 0.1.90
+Summary: Python framework that is heavily inspired by JavaFX and makes creating apps easier
+Home-page: https://fire-the-fox.github.io/tkinter_expansion_docs/
+Author: Fire-The-Fox
+Author-email: gajdos.jan77@gmail.com
+License: MIT
+Download-URL: https://github.com/Fire-The-Fox/tkinter_expansion
+Keywords: tkinter,expansion,designer,themes,framework
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Tkinter expansion
+
+### Python framework that is heavily inspired by JavaFX and makes creating apps easier
+
+# Big and relax update!
+### In this update tkinter_expansion received bug and performance fixes!
+
+Bugs killed:
+> Loading widgets other than 1st widget caused removing widget data when selecting widget
+
+> Error when widget didn't support specific data, for example `activebackground`
+
+Features added:
+> Now binding help is much better `tkinter_expansion.bind_help()` 
+Required parameters: panel - widget where show help, text - help message, timeout - show help message after set time in ms
+
+> Binding widget to Designer is much comfortable with `designer.bind()` this method requires widget variable what you want to bind
+
+> If you rather want to bind multiple widgets at one you can also use `designer.bind_all()` this method require list that contains widgets that you want to bind to Designer 
+
+> Loading theme is much more comfortable and extreme line saving
+when loading theme with `designer.load()` will require dictionary containing:
+`theme_widget_name: widget_var` or `theme_widget_name: [widget_var1, widget_var2]` to apply same widget theme to different widgets
+
+Recommendations:
+> If you want to make life easier add `name="widget_name"` to widget to have easier theme loading
+## For more information please visit [documentation website](https://fire-the-fox.github.io/tkinter_expansion_docs/)
+

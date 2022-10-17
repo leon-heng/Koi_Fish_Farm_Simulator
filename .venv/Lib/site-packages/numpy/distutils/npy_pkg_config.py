@@ -9,7 +9,7 @@ __all__ = ['FormatError', 'PkgNotFound', 'LibraryInfo', 'VariableSet',
 
 _VAR = re.compile(r'\$\{([a-zA-Z0-9_-]+)\}')
 
-class FormatError(OSError):
+class FormatError(IOError):
     """
     Exception thrown when there is a problem parsing a configuration file.
 
@@ -20,7 +20,7 @@ class FormatError(OSError):
     def __str__(self):
         return self.msg
 
-class PkgNotFound(OSError):
+class PkgNotFound(IOError):
     """Exception raised when a package can not be located."""
     def __init__(self, msg):
         self.msg = msg

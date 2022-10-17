@@ -325,16 +325,16 @@ class EpsImageFile(ImageFile.ImageFile):
         else:
             raise SyntaxError("not an EPS file")
 
-        return length, offset
+        return (length, offset)
 
     def load(self, scale=1, transparency=False):
         # Load EPS via Ghostscript
-        if self.tile:
-            self.im = Ghostscript(self.tile, self.size, self.fp, scale, transparency)
-            self.mode = self.im.mode
-            self._size = self.im.size
-            self.tile = []
-        return Image.Image.load(self)
+        if not self.tile:
+            return
+        self.im = Ghostscript(self.tile, self.size, self.fp, scale, transparency)
+        self.mode = self.im.mode
+        self._size = self.im.size
+        self.tile = []
 
     def load_seek(self, *args, **kwargs):
         # we can't incrementally load, so force ImageFile.parser to

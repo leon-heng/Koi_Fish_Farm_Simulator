@@ -23,7 +23,8 @@ def _decode_line(line, encoding=None):
 
     Returns
     -------
-    decoded_line : str
+    decoded_line : unicode
+         Unicode in Python 2, a str (unicode) in Python 3.
 
     """
     if type(line) is bytes:

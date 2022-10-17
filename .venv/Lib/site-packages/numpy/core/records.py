@@ -33,6 +33,7 @@ Record arrays allow us to access fields as properties::
   array([2., 2.])
 
 """
+import os
 import warnings
 from collections import Counter
 from contextlib import nullcontext
@@ -41,7 +42,7 @@ from . import numeric as sb
 from . import numerictypes as nt
 from numpy.compat import os_fspath
 from numpy.core.overrides import set_module
-from .arrayprint import _get_legacy_print_mode
+from .arrayprint import get_printoptions
 
 # All of the functions allow formats to be a dtype
 __all__ = [
@@ -68,7 +69,7 @@ _byteorderconv = {'b':'>',
                   'i':'|'}
 
 # formats regular expression
-# allows multidimensional spec with a tuple syntax in front
+# allows multidimension spec with a tuple syntax in front
 # of the letter code '(2,3)f4' and ' (  2 ,  3  )  f4  '
 # are equally allowed
 
@@ -230,12 +231,12 @@ class record(nt.void):
     __module__ = 'numpy'
 
     def __repr__(self):
-        if _get_legacy_print_mode() <= 113:
+        if get_printoptions()['legacy'] == '1.13':
             return self.__str__()
         return super().__repr__()
 
     def __str__(self):
-        if _get_legacy_print_mode() <= 113:
+        if get_printoptions()['legacy'] == '1.13':
             return str(self.item())
         return super().__str__()
 
@@ -551,7 +552,7 @@ class recarray(ndarray):
             lst = "[], shape=%s" % (repr(self.shape),)
 
         lf = '\n'+' '*len(prefix)
-        if _get_legacy_print_mode() <= 113:
+        if get_printoptions()['legacy'] == '1.13':
             lf = ' ' + lf  # trailing space
         return fmt % (lst, lf, repr_dtype)
 
@@ -585,7 +586,6 @@ def _deprecate_shape_0_as_None(shape):
         return shape
 
 
-@set_module("numpy.rec")
 def fromarrays(arrayList, dtype=None, shape=None, formats=None,
                names=None, titles=None, aligned=False, byteorder=None):
     """Create a record array from a (flat) list of arrays
@@ -665,22 +665,20 @@ def fromarrays(arrayList, dtype=None, shape=None, formats=None,
     if nn > 0:
         shape = shape[:-nn]
 
-    _array = recarray(shape, descr)
-
-    # populate the record array (makes a copy)
     for k, obj in enumerate(arrayList):
         nn = descr[k].ndim
         testshape = obj.shape[:obj.ndim - nn]
-        name = _names[k]
         if testshape != shape:
-            raise ValueError(f'array-shape mismatch in array {k} ("{name}")')
+            raise ValueError("array-shape mismatch in array %d" % k)
 
-        _array[name] = obj
+    _array = recarray(shape, descr)
+
+    # populate the record array (makes a copy)
+    for i in range(len(arrayList)):
+        _array[_names[i]] = arrayList[i]
 
     return _array
 
-
-@set_module("numpy.rec")
 def fromrecords(recList, dtype=None, shape=None, formats=None, names=None,
                 titles=None, aligned=False, byteorder=None):
     """Create a recarray from a list of records in text form.
@@ -765,7 +763,6 @@ def fromrecords(recList, dtype=None, shape=None, formats=None, names=None,
     return res
 
 
-@set_module("numpy.rec")
 def fromstring(datastring, dtype=None, shape=None, offset=0, formats=None,
                names=None, titles=None, aligned=False, byteorder=None):
     r"""Create a record array from binary data
@@ -848,8 +845,6 @@ def get_remaining_size(fd):
     finally:
         fd.seek(pos, 0)
 
-
-@set_module("numpy.rec")
 def fromfile(fd, dtype=None, shape=None, offset=0, formats=None,
              names=None, titles=None, aligned=False, byteorder=None):
     """Create an array from binary file data
@@ -945,12 +940,10 @@ def fromfile(fd, dtype=None, shape=None, offset=0, formats=None,
         _array = recarray(shape, descr)
         nbytesread = fd.readinto(_array.data)
         if nbytesread != nbytes:
-            raise OSError("Didn't read as many bytes as expected")
+            raise IOError("Didn't read as many bytes as expected")
 
     return _array
 
-
-@set_module("numpy.rec")
 def array(obj, dtype=None, shape=None, offset=0, strides=None, formats=None,
           names=None, titles=None, aligned=False, byteorder=None, copy=True):
     """

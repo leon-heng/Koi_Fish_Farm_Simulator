@@ -1,5 +1,4 @@
-#ifndef NUMPY_CORE_INCLUDE_NUMPY_ARRAYOBJECT_H_
-#define NUMPY_CORE_INCLUDE_NUMPY_ARRAYOBJECT_H_
+#ifndef Py_ARRAYOBJECT_H
 #define Py_ARRAYOBJECT_H
 
 #include "ndarrayobject.h"
@@ -9,4 +8,4 @@
 #include "noprefix.h"
 #endif
 
-#endif  /* NUMPY_CORE_INCLUDE_NUMPY_ARRAYOBJECT_H_ */
+#endif

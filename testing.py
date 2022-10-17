@@ -1,8 +1,8 @@
 import math
 
-def main():
-    for i in range(30):
-        print(3*math.sin(math.radians(75 + i)))
+class Fish:
+    def __init__(self, name):
+        self.name = name
 
-if __name__== "__main__":
-    main()
+fish1 = Fish("Koi")
+print(fish1.name)

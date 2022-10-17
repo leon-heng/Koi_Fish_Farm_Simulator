@@ -190,11 +190,9 @@ def _save_all(im, fp, filename):
             palette = im.getpalette()
             if palette:
                 r, g, b = palette[background * 3 : (background + 1) * 3]
-                background = (r, g, b, 255)
-            else:
-                background = (background, background, background, 255)
+                background = (r, g, b, 0)
 
-    duration = im.encoderinfo.get("duration", im.info.get("duration", 0))
+    duration = im.encoderinfo.get("duration", im.info.get("duration"))
     loop = im.encoderinfo.get("loop", 0)
     minimize_size = im.encoderinfo.get("minimize_size", False)
     kmin = im.encoderinfo.get("kmin", None)
@@ -222,10 +220,11 @@ def _save_all(im, fp, filename):
     if (
         not isinstance(background, (list, tuple))
         or len(background) != 4
-        or not all(0 <= v < 256 for v in background)
+        or not all(v >= 0 and v < 256 for v in background)
     ):
         raise OSError(
-            f"Background color is not an RGBA tuple clamped to (0-255): {background}"
+            "Background color is not an RGBA tuple clamped to (0-255): %s"
+            % str(background)
         )
 
     # Convert to packed uint

@@ -1,16 +1,14 @@
 /*
  * This is a convenience header file providing compatibility utilities
- * for supporting different minor versions of Python 3.
- * It was originally used to support the transition from Python 2,
- * hence the "3k" naming.
+ * for supporting Python 2 and Python 3 in the same code base.
  *
  * If you want to use this for your own projects, it's recommended to make a
  * copy of it. Although the stuff below is unlikely to change, we don't provide
  * strong backwards compatibility guarantees at the moment.
  */
 
-#ifndef NUMPY_CORE_INCLUDE_NUMPY_NPY_3KCOMPAT_H_
-#define NUMPY_CORE_INCLUDE_NUMPY_NPY_3KCOMPAT_H_
+#ifndef _NPY_3KCOMPAT_H_
+#define _NPY_3KCOMPAT_H_
 
 #include <Python.h>
 #include <stdio.h>
@@ -594,4 +592,4 @@ NpyCapsule_Check(PyObject *ptr)
 #endif
 
 
-#endif  /* NUMPY_CORE_INCLUDE_NUMPY_NPY_3KCOMPAT_H_ */
+#endif /* _NPY_3KCOMPAT_H_ */

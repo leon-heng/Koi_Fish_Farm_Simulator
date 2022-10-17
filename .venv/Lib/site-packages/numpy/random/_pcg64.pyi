@@ -1,7 +1,13 @@
-from typing import TypedDict
+import sys
+from typing import Union
 
 from numpy.random.bit_generator import BitGenerator, SeedSequence
-from numpy._typing import _ArrayLikeInt_co
+from numpy.typing import _ArrayLikeInt_co
+
+if sys.version_info >= (3, 8):
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
 
 class _PCG64Internal(TypedDict):
     state: int
@@ -14,7 +20,7 @@ class _PCG64State(TypedDict):
     uinteger: int
 
 class PCG64(BitGenerator):
-    def __init__(self, seed: None | _ArrayLikeInt_co | SeedSequence = ...) -> None: ...
+    def __init__(self, seed: Union[None, _ArrayLikeInt_co, SeedSequence] = ...) -> None: ...
     def jumped(self, jumps: int = ...) -> PCG64: ...
     @property
     def state(
@@ -28,7 +34,7 @@ class PCG64(BitGenerator):
     def advance(self, delta: int) -> PCG64: ...
 
 class PCG64DXSM(BitGenerator):
-    def __init__(self, seed: None | _ArrayLikeInt_co | SeedSequence = ...) -> None: ...
+    def __init__(self, seed: Union[None, _ArrayLikeInt_co, SeedSequence] = ...) -> None: ...
     def jumped(self, jumps: int = ...) -> PCG64DXSM: ...
     @property
     def state(

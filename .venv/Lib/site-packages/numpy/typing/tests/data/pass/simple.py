@@ -2,7 +2,7 @@
 import operator
 
 import numpy as np
-from collections.abc import Iterable
+from typing import Iterable  # noqa: F401
 
 # Basic checks
 array = np.array([1, 2])
@@ -47,7 +47,7 @@ np.dtype(object_dtype)
 
 np.dtype((np.int32, (np.int8, 4)))
 
-# Dtype comparison
+# Dtype comparision
 np.dtype(float) == float
 np.dtype(float) != np.float64
 np.dtype(float) < None
