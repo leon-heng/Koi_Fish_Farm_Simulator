@@ -15,10 +15,10 @@ white = np.array((255, 255, 255, 255))
 transparent = np.array((255, 255, 255, 0))
 eyeblack = np.array((0, 0, 0, 255))
 
-WIDTH = 1280
-HEIGTH = 1280
-EYE_WIDTH = 60
-EYE_THICKNESS = 20
+WIDTH = 600
+HEIGTH = 600
+EYE_WIDTH = 30
+EYE_THICKNESS = 12
 
 KOI_THICKNESS_MAX = 0.30
 KOI_THICKNESS_MIN = 0.18
