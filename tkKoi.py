@@ -12,17 +12,37 @@ class tkKoi:
 
         self.koi_image = ImageTk.PhotoImage(self.temp_image, master = self.master)
         self.image = self.canvas.create_image(x, y, image=self.koi_image)
-
-        self.velocity = -1.0
+        self.image2 = self.canvas.create_oval(350, 350, 350, 350, width=3)
+        self.velocity = -2.0
         self.angle = 0.0
 
 
     def move(self, destination : tuple):
-        self.angle += 1
-        self.angle %= 360
         x, y = self.canvas.coords(self.image)
-        x -= 2*math.sin(math.radians(90 + self.angle))
-        y -= 2*math.cos(math.radians(90 + self.angle))
+        dx = 350 - x
+        dy = 350 - y
+        
+        if dx > 0 and dy > 0:
+            target_angle = -(math.degrees(math.atan(dy/dx)) - 180)
+        elif dx > 0 and dy < 0:
+            target_angle = -(math.degrees(math.atan(dy/dx)) + 180)
+        elif dx < 0 and dy > 0:
+            target_angle = -math.degrees(math.atan(dy/dx))
+        elif dx < 0 and dy < 0:
+            target_angle = -math.degrees(math.atan(dy/dx))
+
+        print(dx, dy, target_angle, self.angle - 90)
+        if target_angle - self.angle> 0:
+            if target_angle > 0:
+                self.angle += 1
+            else:
+                self.angle -= 1
+
+            self.angle %= 360
+
+        
+        x += self.velocity*math.sin(math.radians(90 + self.angle))
+        y += self.velocity*math.cos(math.radians(90 + self.angle))
 
 
         self.koi_image = ImageTk.PhotoImage(self.temp_image.rotate(self.angle), master = self.master)

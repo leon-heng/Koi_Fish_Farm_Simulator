@@ -1,8 +1,15 @@
 import math
 
-class Fish:
-    def __init__(self, name):
-        self.name = name
+dx = 150 - 250
+dy = 350 - 250
 
-fish1 = Fish("Koi")
-print(fish1.name)
+if dx > 0 and dy > 0:
+    target_angle = math.degrees(math.atan(dy/dx)) - 180
+elif dx > 0 and dy < 0:
+    target_angle = math.degrees(math.atan(dy/dx)) + 180
+elif dx < 0 and dy > 0:
+    target_angle = math.degrees(math.atan(dy/dx))
+elif dx < 0 and dy < 0:
+    target_angle = math.degrees(math.atan(dy/dx))
+
+print(target_angle)
