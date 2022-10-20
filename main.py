@@ -13,6 +13,9 @@ white = np.array((255, 255, 255, 255))
 transparent = np.array((255, 255, 255, 0))
 eyeblack = np.array((0, 0, 0, 255))
 
+WIDTH = 1500
+HEIGHT = 1500
+
 def main():
     fish1 = Koi()
 
@@ -25,32 +28,28 @@ def main():
     color_layers4=[red1, black1]
     fish4 = Koi("Leo", color_layers4)
 
-    
-
     window = tk.Tk()
-    WIDTH = 1500
-    HEIGHT = 1500
     canvas =  tk.Canvas(window, width=WIDTH, height=HEIGHT)
     canvas.pack()
 
-    
     tk_fish1 = tkKoi(window, canvas, 550, 550, fish1.filename)
-    tk_fish2 = tkKoi(window, canvas, 199, 70, fish2.filename)
-    tk_fish3 = tkKoi(window, canvas, 125, 189, fish3.filename)
-    tk_fish4 = tkKoi(window, canvas, 100, 120, fish4.filename)
+    x, y = generate_new_location()
 
-    
     while True:
-        tk_fish1.move([100,300])
-        tk_fish2.move([523,888])
-        tk_fish3.move([1211,350])
-        tk_fish4.move([490,850])
+        if not tk_fish1.reached_destination():
+            if not tk_fish1.has_target:
+                x, y = generate_new_location()
+            tk_fish1.move([x, y])
 
         window.update()
         time.sleep(0.01)
 
     window.mainloop()
 
+def generate_new_location():
+    target_x = np.random.randint(100, WIDTH - 100)
+    target_y = np.random.randint(100, HEIGHT - 100)
+    return (target_x, target_y)
 
 if __name__== "__main__":
     main()
