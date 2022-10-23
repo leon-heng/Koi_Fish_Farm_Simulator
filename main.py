@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 from concurrent.futures import thread
 import tkinter as tk
 from airfoil import *
@@ -5,8 +6,9 @@ import numpy as np
 import time
 from Koi import Koi
 from tkKoi import tkKoi
-from queue import Empty, Queue
+from queue import Queue
 from threading import Thread
+
 
 red1 = np.array((227, 68, 39, 255))
 orange1 = np.array((241, 99, 35, 255))
@@ -16,56 +18,74 @@ white = np.array((255, 255, 255, 255))
 transparent = np.array((255, 255, 255, 0))
 eyeblack = np.array((0, 0, 0, 255))
 
-WIDTH = 800
-HEIGHT = 800
+color_list = [ red1,
+                orange1,
+                yellow1,
+                black1
+                ]
+
+WIDTH = 1000
+HEIGHT = 1000
 MARGIN = 50
 
-queue = Queue(maxsize=1)
+queue = []
+t = []
+fish = []
+tk_fish = []
+new_loc = []
+
 
 def main():
-    fish1 = Koi()
 
-    color_layers2 = [orange1, black1]
-    fish2 = Koi("Fae", color_layers2)
+    for i in range(100):
+        color_num = np.random.randint(1,3)
+        layer = None
+        layer = []
+        for j in range(color_num):
+            layer.append(color_list[np.random.randint(0,4)])
+        fish.append(Koi(("Koi_"+ str(i + 1)), layer))
     
-    color_layers3=[red1, orange1]
-    fish3 = Koi("Kuri", color_layers3)
-
-    color_layers4=[red1, black1]
-    fish4 = Koi("Leo", color_layers4)
-
     window = tk.Tk()
-    canvas =  tk.Canvas(window, width=WIDTH, height=HEIGHT)
+    canvas =  tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='skyblue')
     canvas.pack()
 
-    tk_fish1 = tkKoi(window, canvas, 550, 550, fish1.filename)
-    t = Thread(target=new_location, args=(np.random.randint(2,4),))
-    new_location(0)
+    for i in range(len(fish)):
+        x, y = random_location()
+        tk_fish.append(tkKoi(window, canvas, x, y, fish[i].filename))
+        t.append(Thread(target=new_location, args=(np.random.randint(2,4),)))
+        queue.append(Queue(maxsize=1))
+        new_location(i, 0)
+        new_loc.append(None)
 
     while True:
+        for i in range(len(fish)):
+            if queue[i].empty():
+                if not t[i].is_alive():
+                    t[i] = None
+                    t[i] = Thread(target=new_location, args=(i,np.random.randint(2,12),))
+                    t[i].start()
+                    print("Fish " + str(i) + " change location")
+            else:
+                new_loc[i] = queue[i].get()
 
-        if queue.empty():
-            if not t.is_alive():
-                t = None
-                t = Thread(target=new_location, args=(np.random.randint(2,12),))
-                t.start()
-        else:
-            new_loc = queue.get()
-            print(new_loc)
+            tk_fish[i].move(new_loc[i])
 
-        tk_fish1.move(new_loc)
         window.update()
         time.sleep(0.01)
 
     window.mainloop()
 
 
-def new_location(delay : int):
+def new_location(q_index : int, delay : int):
+    time.sleep(delay)
+    queue[q_index].put(random_location())
+
+
+def random_location():
     x = np.random.randint(MARGIN, WIDTH - MARGIN)
     y = np.random.randint(MARGIN, HEIGHT - MARGIN)
-    time.sleep(delay)
-    queue.put([x, y])
-
+    print(x, y)
+    return [x, y]
 
 if __name__== "__main__":
     main()

@@ -25,7 +25,7 @@ KOI_THICKNESS_MIN = 0.18
 
 
 class Koi:
-    def __init__(self, name="you", color_layers : list = [red1]):
+    def __init__(self, name : string="Koi", color_layers : list=[red1]):
         self.name = name
         self.thickness = random.uniform(KOI_THICKNESS_MIN, KOI_THICKNESS_MAX)
         x1 = np.linspace(0, WIDTH, WIDTH * 4)
@@ -41,7 +41,7 @@ class Koi:
         
         for i in range(len(color_layers)):
             self.seed.append(random.randint(1,999999))
-            self.octave.append(random.randint(1,6))
+            self.octave.append(random.randint(2,8))
             self.thres.append(random.uniform(-0.18, 0.2))
             is_first_layer = False
             if i == 0:
