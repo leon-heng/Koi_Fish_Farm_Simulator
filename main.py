@@ -6,7 +6,7 @@ import numpy as np
 import time
 from Koi import Koi
 from tkKoi import tkKoi
-from queue import Queue
+from queue import Empty, Queue
 from threading import Thread
 
 
@@ -34,17 +34,18 @@ fish = []
 tk_fish = []
 new_loc = []
 
+number_of_koi = 5
 
 def main():
 
-    for i in range(100):
-        color_num = np.random.randint(1,3)
+    for i in range(number_of_koi):
+        color_num = np.random.randint(1,4)
         layer = None
         layer = []
         for j in range(color_num):
             layer.append(color_list[np.random.randint(0,4)])
         fish.append(Koi(("Koi_"+ str(i + 1)), layer))
-    
+
     window = tk.Tk()
     canvas =  tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='skyblue')
     canvas.pack()
@@ -64,7 +65,7 @@ def main():
                     t[i] = None
                     t[i] = Thread(target=new_location, args=(i,np.random.randint(2,12),))
                     t[i].start()
-                    print("Fish " + str(i) + " change location")
+                    # print("Fish " + str(i) + " change location")
             else:
                 new_loc[i] = queue[i].get()
 
@@ -84,7 +85,6 @@ def new_location(q_index : int, delay : int):
 def random_location():
     x = np.random.randint(MARGIN, WIDTH - MARGIN)
     y = np.random.randint(MARGIN, HEIGHT - MARGIN)
-    print(x, y)
     return [x, y]
 
 if __name__== "__main__":
