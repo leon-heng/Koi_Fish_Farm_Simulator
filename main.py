@@ -34,7 +34,7 @@ fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 5
+number_of_koi = 15
 
 def main():
 
@@ -75,6 +75,15 @@ def main():
         time.sleep(0.01)
 
     window.mainloop()
+
+
+def add_koi():
+    color_num = np.random.randint(1,4)
+    layer = None
+    layer = []
+    for j in range(color_num):
+        layer.append(color_list[np.random.randint(0,4)])
+    fish.append(Koi(("Koi_"+ str(55 + 1)), layer))
 
 
 def new_location(q_index : int, delay : int):
