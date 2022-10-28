@@ -24,9 +24,9 @@ color_list = [ red1,
                 black1
                 ]
 
-WIDTH = 1000
-HEIGHT = 1000
-MARGIN = 50
+WIDTH = 750
+HEIGHT = 750
+MARGIN = 35
 
 queue = []
 t = []
@@ -34,7 +34,7 @@ fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 15
+number_of_koi = 3
 
 def main():
 

@@ -34,7 +34,7 @@ class Koi:
         y2 = np.append(y1, np.flip(-y1, 0))
         y2 = y2 + HEIGTH/2
         
-        self.layers = []
+        self.pig_layers = []
         self.seed = []
         self.octave = []
         self.thres = []
@@ -52,20 +52,20 @@ class Koi:
         self.eye_pos = int(random.uniform(0.075, 0.10) * WIDTH)
         self.draw_eye(y1, self.eye_pos)
 
-        image = plt.figure()
-        layers = image.add_subplot(111)
-        layers.plot(x2, y2, 'k-', lw=0.5)
-        layers.axis([0, WIDTH, 0, HEIGTH])
-        layers.axis('off')
+        # image = plt.figure()
+        # layers = image.add_subplot(111)
+        # layers.plot(x2, y2, 'k-', lw=0.5)
+        # layers.axis([0, WIDTH, 0, HEIGTH])
+        # layers.axis('off')
 
-        for layer in self.layers:
-            layers.imshow(layer)
-        layers.imshow(self.eye)
-        image.savefig(self.name + ".png", transparent=True, format = 'png')
-        self.filename = self.name + ".png"
-        image.clf()
-        plt.close()
-
+        # for pigment in self.pig_layers:
+        #     layers.imshow(pigment)
+        # layers.imshow(self.eye)
+        # image.savefig(self.name + ".png", transparent=True, format = 'png')
+        # self.filename = self.name + ".png"
+        # image.clf()
+        # plt.close()
+        return
 
 
     def draw_layer(self, shape : float, seed : int, octave : int, threshold : float,\
@@ -94,7 +94,7 @@ class Koi:
                 else:
                     layer[y, x] = transparent
 
-        self.layers.append(layer)
+        self.pig_layers.append(layer)
 
 
     def draw_eye(self, shape : float, eye_pos : int):

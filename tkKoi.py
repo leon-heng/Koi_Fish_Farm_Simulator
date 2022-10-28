@@ -25,17 +25,7 @@ class tkKoi:
         dx = x2 - x1
         dy = y2 - y1
         
-        if dx > 0 and dy > 0:
-            target_angle = -(math.degrees(math.atan(dy/dx)) - 180)
-        elif dx > 0 and dy < 0:
-            target_angle = -(math.degrees(math.atan(dy/dx)) + 180)
-        elif dx < 0 and dy > 0:
-            target_angle = -math.degrees(math.atan(dy/dx))
-        elif dx < 0 and dy < 0:
-            target_angle = -math.degrees(math.atan(dy/dx))
-        else:
-            target_angle = 0
-
+        target_angle = self.calculate_target_angle(dx, dy)
         temp_angle = self.angle
         if temp_angle == 0:
             temp_angle += 360
@@ -52,3 +42,17 @@ class tkKoi:
 
         self.koi_image = ImageTk.PhotoImage(self.temp_image.rotate(self.angle), master = self.master)
         self.image = self.canvas.create_image(x1, y1, image=self.koi_image)
+
+
+    def calculate_target_angle(self, dx, dy):
+        if dx > 0 and dy > 0:
+            return -(math.degrees(math.atan(dy/dx)) - 180)
+        elif dx > 0 and dy < 0:
+            return -(math.degrees(math.atan(dy/dx)) + 180)
+        elif dx < 0 and dy > 0:
+            return -math.degrees(math.atan(dy/dx))
+        elif dx < 0 and dy < 0:
+            return -math.degrees(math.atan(dy/dx))
+        else:
+            return 0
+        
