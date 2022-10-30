@@ -8,6 +8,9 @@ from Koi import Koi
 from tkKoi import tkKoi
 from queue import Empty, Queue
 from threading import Thread
+from multiprocessing import Process, Queue as processQueue 
+import matplotlib.pyplot as plt
+import os
 
 
 red1 = np.array((227, 68, 39, 255))
@@ -29,33 +32,35 @@ HEIGHT = 1000
 MARGIN = 50
 
 thrd = []
-q = Queue()
+q = processQueue()
 queue = []
 t = []
 fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 1
+number_of_koi = 3
+dev_mode = False
 
 def main():
-
-    for i in range(number_of_koi):
-        color_num = np.random.randint(1,2)
-        layer = None
-        layer = []
-        for j in range(color_num):
-            layer.append(color_list[np.random.randint(0,4)])
-
-        thrd.append(Thread(target=creating_koi, args=(i, layer,)))
-        thrd[i].start()
-        # fish.append(Koi(("Koi_"+ str(i + 1)), layer))
+    koi_number = np.random.randint(1,11)
+    generate_kois(number_of_koi)
     
-    while q.qsize() == number_of_koi:
-        fish.append(q)
+    while q.qsize() != number_of_koi:
+        if dev_mode: print(str(q.qsize()))
+        continue
+
+    time.sleep(0.15)
+    q.put(None)
+
+    print(q.qsize()-1)
+    for koi in iter(q.get, None):
+        fish.append(koi)
+        generate_koi_img(koi)
+    print(len(fish))
 
     window = tk.Tk()
-    canvas =  tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='skyblue')
+    canvas = tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='skyblue')
     canvas.pack()
 
     for i in range(len(fish)):
@@ -73,7 +78,7 @@ def main():
                     t[i] = None
                     t[i] = Thread(target=new_location, args=(i,np.random.randint(2,12),))
                     t[i].start()
-                    # print("Fish " + str(i) + " change location")
+
             else:
                 new_loc[i] = queue[i].get()
 
@@ -85,8 +90,40 @@ def main():
     window.mainloop()
 
 
-def creating_koi(index : int, layer : list) -> Koi:
-    q.put(Koi(("Koi_"+ str(index + 1)), layer))
+def generate_kois(n : int):
+    for i in range(n):
+        color_num = np.random.randint(1,4)
+        layer = None
+        layer = []
+        for j in range(color_num):
+            layer.append(color_list[np.random.randint(0,4)])
+
+        thrd.append(Process(target=enqueue_koi, args=(i, layer, q)))
+        if dev_mode: print(str(i) + " started")
+        thrd[i].start()
+
+
+def enqueue_koi(index : int, layer : list , queue : processQueue):
+    koi = Koi(("Koi_"+ str(index + 1)), layer)
+    queue.put(koi)
+
+
+def generate_koi_img(koi : Koi):
+    # path = os.path.abspath(__file__)
+    full_path = "koi_folder/" + koi.name + ".png"
+    image = plt.figure()
+    layers = image.add_subplot(111)
+    layers.plot(koi.shape[0], koi.shape[1], 'k-', lw=0.5)
+    layers.axis([0, 600, 0, 600])
+    layers.axis('off')
+
+    for pigment in koi.pig_layers:
+        layers.imshow(pigment)
+    layers.imshow(koi.eye)
+    image.savefig(full_path, transparent=True, format = 'png')
+    koi.filename = full_path
+    image.clf()
+    plt.close()
 
 
 def new_location(q_index : int, delay : int):
@@ -97,8 +134,9 @@ def new_location(q_index : int, delay : int):
 def random_location():
     x = np.random.randint(MARGIN, WIDTH - MARGIN)
     y = np.random.randint(MARGIN, HEIGHT - MARGIN)
-    print(x, y)
+    if dev_mode: print(x, y)
     return [x, y]
+
 
 if __name__== "__main__":
     main()

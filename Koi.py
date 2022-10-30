@@ -33,11 +33,13 @@ class Koi:
         y1 = naca4_symmetric(self.thickness, WIDTH, x1)
         y2 = np.append(y1, np.flip(-y1, 0))
         y2 = y2 + HEIGTH/2
-        
+
+        self.shape = [x2, y2]
         self.pig_layers = []
         self.seed = []
         self.octave = []
         self.thres = []
+        self.filename = ""
         
         for i in range(len(color_layers)):
             self.seed.append(random.randint(1,999999))
@@ -65,7 +67,6 @@ class Koi:
         # self.filename = self.name + ".png"
         # image.clf()
         # plt.close()
-        return
 
 
     def draw_layer(self, shape : float, seed : int, octave : int, threshold : float,\
