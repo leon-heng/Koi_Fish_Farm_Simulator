@@ -8,7 +8,7 @@ from Koi import Koi
 from tkKoi import tkKoi
 from queue import Empty, Queue
 from threading import Thread
-from multiprocessing import Process, Queue as processQueue 
+from multiprocessing import Process, JoinableQueue 
 import matplotlib.pyplot as plt
 import os
 
@@ -27,34 +27,46 @@ color_list = [ red1,
                 black1
                 ]
 
-WIDTH = 1000
+WIDTH = 1800
 HEIGHT = 1000
 MARGIN = 50
 
 thrd = []
-q = processQueue()
+
 queue = []
 t = []
 fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 50
-dev_mode = False
+number_of_koi = 4
+number_of_process = 2
+dev_mode = True
 
 def main():
+    q_input = JoinableQueue()
+    q_output = JoinableQueue()
+
     koi_number = np.random.randint(1,11)
-    generate_kois(number_of_koi)
+    for i in range(number_of_process):
+        print("Hello")
+        thrd.append(Process(target=consumer_kois, args=(q_input, q_output)))
+        thrd[i].daemon = True
+        thrd[i].start()
     
-    while q.qsize() != number_of_koi:
-        if dev_mode: print(str(q.qsize()))
+    generate_kois(number_of_koi, q_input, q_output)
+    q_input.join()
+
+    while q_output.qsize() != number_of_koi:
+        if dev_mode: print(str(q_output.qsize()))
         continue
 
-    time.sleep(0.15)
-    q.put(None)
+    time.sleep(0.5)
+    # q_output.put(None)
 
-    print(q.qsize()-1)
-    for koi in iter(q.get, None):
+    print("q have "+ str(q_output.qsize()))
+    for i in range(q_output.qsize()):
+        koi = q_output.get()
         fish.append(koi)
         generate_koi_img(koi)
     print(len(fish))
@@ -90,7 +102,7 @@ def main():
     window.mainloop()
 
 
-def generate_kois(n : int):
+def generate_kois(n : int, q_input : JoinableQueue, q_output : JoinableQueue):
     for i in range(n):
         color_num = np.random.randint(1,4)
         layer = None
@@ -98,15 +110,21 @@ def generate_kois(n : int):
         for j in range(color_num):
             layer.append(color_list[np.random.randint(0,4)])
 
-        thrd.append(Process(target=enqueue_koi, args=(i, layer, q)))
-        if dev_mode: print(str(i) + " started")
-        thrd[i].start()
+        q_input.put([i, layer])
+        # thrd.append(Process(target=enqueue_koi, args=(i, layer, q)))
+        # if dev_mode: print(str(i) + " started")
+        # thrd[i].start()
 
 
-def enqueue_koi(index : int, layer : list , queue : processQueue):
-    koi = Koi(("Koi_"+ str(index + 1)), layer)
-    if dev_mode: print("Done " + koi.name)
-    queue.put(koi)
+def consumer_kois(q_input : JoinableQueue, q_output : JoinableQueue):
+    print("Yolo")
+    while True:
+        i, layer = q_input.get()
+        print(i)
+        koi = Koi(("Koi_"+ str(i + 1)), layer)
+        if dev_mode: print("Done " + koi.name)
+        q_output.put(koi)
+        q_input.task_done()
 
 
 def generate_koi_img(koi : Koi):
