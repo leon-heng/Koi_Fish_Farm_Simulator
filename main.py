@@ -21,36 +21,36 @@ white = np.array((255, 255, 255, 255))
 transparent = np.array((255, 255, 255, 0))
 eyeblack = np.array((0, 0, 0, 255))
 
-color_list = [ red1,
-                orange1,
-                yellow1,
-                black1
-                ]
+color_list = [red1,
+              orange1,
+              yellow1,
+              black1
+             ]
 
 WIDTH = 1800
 HEIGHT = 1000
 MARGIN = 50
 
 thrd = []
-
 queue = []
 t = []
 fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 4
-number_of_process = 2
-dev_mode = True
+number_of_koi = 100
+number_of_process = 10
+dev_mode = False
 
 def main():
+    start = time.time()
     q_input = JoinableQueue()
     q_output = JoinableQueue()
 
     koi_number = np.random.randint(1,11)
     for i in range(number_of_process):
         print("Hello")
-        thrd.append(Process(target=consumer_kois, args=(q_input, q_output)))
+        thrd.append(Process(target=consumer_kois, args=(q_input, q_output, i)))
         thrd[i].daemon = True
         thrd[i].start()
     
@@ -60,16 +60,15 @@ def main():
     while q_output.qsize() != number_of_koi:
         if dev_mode: print(str(q_output.qsize()))
         continue
+    print(time.time() - start)
 
-    time.sleep(0.5)
-    # q_output.put(None)
-
-    print("q have "+ str(q_output.qsize()))
+    print("Start image generation")
     for i in range(q_output.qsize()):
         koi = q_output.get()
         fish.append(koi)
         generate_koi_img(koi)
     print(len(fish))
+    print(time.time() - start)
 
     window = tk.Tk()
     canvas = tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='skyblue')
@@ -89,6 +88,7 @@ def main():
                 if not t[i].is_alive():
                     t[i] = None
                     t[i] = Thread(target=new_location, args=(i,np.random.randint(2,12),))
+                    t[i].daemon = True
                     t[i].start()
 
             else:
@@ -111,16 +111,13 @@ def generate_kois(n : int, q_input : JoinableQueue, q_output : JoinableQueue):
             layer.append(color_list[np.random.randint(0,4)])
 
         q_input.put([i, layer])
-        # thrd.append(Process(target=enqueue_koi, args=(i, layer, q)))
-        # if dev_mode: print(str(i) + " started")
-        # thrd[i].start()
 
 
-def consumer_kois(q_input : JoinableQueue, q_output : JoinableQueue):
-    print("Yolo")
+def consumer_kois(q_input : JoinableQueue, q_output : JoinableQueue, n : int):
+    if dev_mode: print("Process " + str(n+1) + " Starts")
     while True:
         i, layer = q_input.get()
-        print(i)
+        if dev_mode: print(str(n+1) + " Working on koi "+ str(i+1))
         koi = Koi(("Koi_"+ str(i + 1)), layer)
         if dev_mode: print("Done " + koi.name)
         q_output.put(koi)
