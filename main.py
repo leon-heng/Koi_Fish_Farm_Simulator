@@ -38,7 +38,7 @@ fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 100
+number_of_koi = 500
 number_of_process = 10
 dev_mode = False
 
@@ -107,7 +107,7 @@ def generate_kois(n : int, q_input : JoinableQueue, q_output : JoinableQueue):
         color_num = np.random.randint(1,4)
         layer = None
         layer = []
-        for j in range(color_num):
+        for j in range(3):
             layer.append(color_list[np.random.randint(0,4)])
 
         q_input.put([i, layer])

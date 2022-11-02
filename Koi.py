@@ -54,20 +54,6 @@ class Koi:
         self.eye_pos = int(random.uniform(0.075, 0.10) * WIDTH)
         self.draw_eye(y1, self.eye_pos)
 
-        # image = plt.figure()
-        # layers = image.add_subplot(111)
-        # layers.plot(x2, y2, 'k-', lw=0.5)
-        # layers.axis([0, WIDTH, 0, HEIGTH])
-        # layers.axis('off')
-
-        # for pigment in self.pig_layers:
-        #     layers.imshow(pigment)
-        # layers.imshow(self.eye)
-        # image.savefig(self.name + ".png", transparent=True, format = 'png')
-        # self.filename = self.name + ".png"
-        # image.clf()
-        # plt.close()
-
 
     def draw_layer(self, shape : float, seed : int, octave : int, threshold : float,\
              color, first_layer : bool = False):
