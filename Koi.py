@@ -18,11 +18,10 @@ eyeblack = np.array((0, 0, 0, 255))
 WIDTH = 600
 HEIGTH = 600
 EYE_WIDTH = 30
-EYE_THICKNESS = 12
+EYE_THICKNESS = 22
 
 KOI_THICKNESS_MAX = 0.30
 KOI_THICKNESS_MIN = 0.18
-
 
 class Koi:
     def __init__(self, name : string="Koi", color_layers : list=[red1]):

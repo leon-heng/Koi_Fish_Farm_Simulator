@@ -21,11 +21,12 @@ white = np.array((255, 255, 255, 255))
 transparent = np.array((255, 255, 255, 0))
 eyeblack = np.array((0, 0, 0, 255))
 
-color_list = [red1,
-              orange1,
-              yellow1,
-              black1
-             ]
+color_list = [
+    red1,    
+    orange1,
+    yellow1,
+    black1
+    ]
 
 WIDTH = 1800
 HEIGHT = 1000
@@ -38,8 +39,8 @@ fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 500
-number_of_process = 10
+number_of_koi = 100
+number_of_process = 15
 dev_mode = False
 
 def main():
@@ -49,7 +50,6 @@ def main():
 
     koi_number = np.random.randint(1,11)
     for i in range(number_of_process):
-        print("Hello")
         thrd.append(Process(target=consumer_kois, args=(q_input, q_output, i)))
         thrd[i].daemon = True
         thrd[i].start()
