@@ -28,8 +28,8 @@ color_list = [
     black1
     ]
 
-WIDTH = 1800
-HEIGHT = 1000
+WIDTH = 900
+HEIGHT = 900
 MARGIN = 50
 
 thrd = []
@@ -39,8 +39,8 @@ fish = []
 tk_fish = []
 new_loc = []
 
-number_of_koi = 100
-number_of_process = 15
+number_of_koi = 40
+number_of_process = 20
 dev_mode = False
 
 def main():
