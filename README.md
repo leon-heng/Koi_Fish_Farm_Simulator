@@ -4,7 +4,7 @@
 <!-- PROJECT DETAIL -->
 <br />
 <div align="center">
-  <h1 align="center">Koi Fish Simulator</h1>
+  <h1 align="center">Koi Fish Farm Simulator</h1>
   <a href="https://github.com/OnePotatoCat/Procedural_Generation_Practice">
     <img src="/assets/icon_koi.png" alt="Logo" width="512" height="256">
   </a>
