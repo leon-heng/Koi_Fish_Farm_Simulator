@@ -71,7 +71,7 @@ A koi fish (or a fish in general) with the fins is closely resemble the shape of
 Therefore, to generate the shape of a fish, [NACA 4 Series Airfoils (symmetrical)](https://www.fxsolver.com/browse/formulas/NACA+4+Series+Airfoils+%28symmetrical%29) equation is used. The c constant is randomized to create different thickness of airfoil shape, hence different size of koi fishes.
 
 <div align="center">
-  <img src="/assets/naca4_symmetric_test.png" alt="Logo" width="320" height="240">
+  <img src="/assets/naca4_symmetric_test.png" alt="airfoil" width="320" height="240">
 </div>
 <br />
 <br />
@@ -83,7 +83,7 @@ In summary, Job Talle uses 3D noise for pigment generation. For this project 2D 
 
 [Perlin Noise](https://pypi.org/project/perlin-noise/) library is used to make my day a little more simple. 
 <div align="center">
-  <img src="/assets/perlin_noise.png)" alt="Logo" width="251" height="251">
+  <img src="/assets/perlin_noise.png" alt="perlin noise" width="251" height="251">
 </div>
 Each koi fish has a minimum of 1 to 3 pigment colors. Each color pigment is create and store as a layer.
 
@@ -112,6 +112,8 @@ Lastly, to display the koi fishes, tkinter canvas is used. Each koi fishes will 
 <sub>Threading seem like an overkill here, but I want to familiarized threading and queue :stuck_out_tongue_winking_eye:</sub>
 <br />
 <br />
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- Contributing -->
 ## Contributing
