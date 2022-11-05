@@ -110,7 +110,4 @@ def naca4_symmetric_test ( ):
   return
 
 if ( __name__ == '__main__' ):
-  from timestamp import timestamp
-  timestamp ( )
   naca4_symmetric_test ( )
-  timestamp ( )
