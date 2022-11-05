@@ -4,7 +4,7 @@
 <!-- PROJECT DETAIL -->
 <br />
 <div align="center">
-  <h1 align="center">Koi Fish Generator</h1>
+  <h1 align="center">Koi Fish Simulator</h1>
   <a href="https://github.com/OnePotatoCat/Procedural_Generation_Practice">
     <img src="/assets/icon_koi.png" alt="Logo" width="512" height="256">
   </a>
@@ -133,3 +133,4 @@ Linkedin: [[https://github.com/your_username/repo_name](https://github.com/your_
 itch.io : [https://realpotatocat.itch.io/](https://realpotatocat.itch.io/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
