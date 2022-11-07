@@ -128,9 +128,9 @@ Don't forget to give the project a star! Thanks again!
 <!-- Contact -->
 ## Contact
 
-Heng, Kien Leong [Leon]: [[@oPotatoCat](https://twitter.com/your_username)](https://twitter.com/oPotatoCat)
+Heng, Kien Leong [Leon]: [@oPotatoCat](https://twitter.com/oPotatoCat)
 
-Linkedin: [[https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)](https://www.linkedin.com/in/kien-leong-heng-007223156/)
+Linkedin: [https://github.com/your_username/repo_name](https://github.com/OnePotatoCat/Koi_Fish_Farm_Simulator)
 
 itch.io : [https://realpotatocat.itch.io/](https://realpotatocat.itch.io/)
 
