@@ -9,7 +9,7 @@
     <img src="/assets/icon_koi.png" alt="Logo" width="512" height="256">
   </a>
 
-  <h3 align="center">Best-README-Template</h3>
+  <h3 align="center">Koi Fish Farm Simulator</h3>
 
   <p align="center">
     An artificial koi fish farm inspired <a href="https://jobtalle.itch.io/koifarm"> Job Talle's Koi Farm Simulator </a>
