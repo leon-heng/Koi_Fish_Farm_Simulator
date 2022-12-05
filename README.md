@@ -12,7 +12,7 @@
   <h3 align="center">Koi Fish Farm Simulator</h3>
 
   <p align="center">
-    An artificial koi fish farm inspired <a href="https://jobtalle.itch.io/koifarm"> Job Talle's Koi Farm Simulator </a>
+    An artificial koi fish farm inspired by <a href="https://jobtalle.itch.io/koifarm"> Job Talle's Koi Farm Simulator </a>
     <br />
     <a href="https://github.com/OnePotatoCat/Procedural_Generation_Practice"><strong>Explore the docs »</strong></a>
     <br />
