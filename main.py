@@ -10,7 +10,7 @@ from queue import Empty, Queue
 from threading import Thread
 from multiprocessing import Process, JoinableQueue 
 import matplotlib.pyplot as plt
-import os
+import sys
 
 
 red1 = np.array((227, 68, 39, 255))
@@ -41,9 +41,35 @@ new_loc = []
 
 number_of_koi = 40
 number_of_process = 20
-dev_mode = False
+dev_mode = 0
 
 def main():
+
+    if len(sys.argv) == 3:
+        try:
+            dev_mode = int(sys.argv[2])
+            if dev_mode < 0 or dev_mode > 2:
+                dev_mode = 0
+                print("Please enter a valid interger number")
+        except:
+            print("Please enter a valid interger number")
+
+        try:
+            nkois = int(sys.argv[1])
+        except:
+            print("Please enter a valid interger number")
+
+    elif len(sys.argv) == 2:
+        dev_mode = 0
+        try:
+            nkois = int(sys.argv[1])
+        except:
+            print("Please enter a valid interger number")
+
+    else:
+        dev_mode = 0
+        nkois = number_of_koi
+
     start = time.time()
     q_input = JoinableQueue()
     q_output = JoinableQueue()
@@ -54,21 +80,21 @@ def main():
         thrd[i].daemon = True
         thrd[i].start()
     
-    generate_kois(number_of_koi, q_input, q_output)
+    generate_kois(nkois, q_input, q_output)
     q_input.join()
 
-    while q_output.qsize() != number_of_koi:
+    while q_output.qsize() != nkois:
         if dev_mode: print(str(q_output.qsize()))
         continue
-    print(time.time() - start)
+    if dev_mode: print(f"Patterns generation completed in {round(time.time() - start,2)}s")
 
-    print("Start image generation")
+    if dev_mode: print("Start image generation")
     for i in range(q_output.qsize()):
         koi = q_output.get()
         fish.append(koi)
         generate_koi_img(koi)
-    print(len(fish))
-    print(time.time() - start)
+    if dev_mode: print(f"Total {len(fish)} fishes generated in {round(time.time() - start,2)}s")
+    if dev_mode: print(round(time.time() - start,2))
 
     window = tk.Tk()
     canvas = tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='skyblue')
@@ -150,7 +176,7 @@ def new_location(q_index : int, delay : int):
 def random_location():
     x = np.random.randint(MARGIN, WIDTH - MARGIN)
     y = np.random.randint(MARGIN, HEIGHT - MARGIN)
-    if dev_mode: print(x, y)
+    if dev_mode == 2: print(x, y)
     return [x, y]
 
 
