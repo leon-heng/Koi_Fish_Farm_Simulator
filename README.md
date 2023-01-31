@@ -29,6 +29,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#usage">Usage</a></li>
     <li>
       <a href="#koi_fish_generation">Koi Fish Generation</a>
       <ol>
@@ -53,6 +54,20 @@
 </div>
 
 The Koi Fish Generator can create up to 350 unique koi fishes and will swim around the window randomly is a soothing fashion.:relaxed:
+<br />
+
+<!-- USAGE -->
+##  Usage
+<a name="usage"></a>
+```
+py main.py [number of koi fishes] [analytics]
+
+Arguments:
+number of koi fishes    <Input: positve integer> [optional, default=40] 
+                        The number of koi fishes to generates
+analytics               <Input: 0 or 1> [optional, default=0] 
+                        To display the time taken for the program to complete each steps.
+```
 <br />
 
 <!--- Koi Fish Generation --->
