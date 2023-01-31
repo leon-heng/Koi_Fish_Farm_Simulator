@@ -97,6 +97,7 @@ def main():
     if dev_mode: print(round(time.time() - start,2))
 
     window = tk.Tk()
+    window.title("Koi Farm")
     canvas = tk.Canvas(window, width=WIDTH, height=HEIGHT, bg='skyblue')
     canvas.pack()
 
